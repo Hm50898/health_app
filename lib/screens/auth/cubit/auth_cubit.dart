@@ -136,11 +136,11 @@ class AuthCubit extends Cubit<AuthState> {
       request.fields['passwordConfirmed'] = confirmPassword;
       request.fields['PhoneNumber'] = phoneNumber;
       request.fields['userType'] = '0';
-      request.fields['Image'] = '010110101010101010100101';
-      // request.files.add(
-      //   await http.MultipartFile.fromPath(
-      //       'Image', _profileImage?.path ?? 'images/add personal photo.png'),
-      // );
+
+      // Default profile image (1x1 pixel PNG)
+      String defaultImageBase64 =
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+      request.fields['Image'] = defaultImageBase64;
 
       final response = await request.send();
       final respStr = await response.stream.bytesToString();
@@ -155,11 +155,8 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthErrorState(errorMessage));
       }
     } catch (e) {
-      debugPrint('ffffffffffffffffffffffffffffffffffffffffffffff');
-      debugPrint('Error during registration: $e');
-      debugPrint('ffffffffffffffffffffffffffffffffffffffffffffff');
-      print('ffffffffffffffffffffffffffffffffffffffffffffff');
-      emit(AuthErrorState('Error occurred: $e'));
+      debugPrint('Registration error: $e');
+      emit(AuthErrorState('Registration failed. Please try again.'));
     }
   }
 
