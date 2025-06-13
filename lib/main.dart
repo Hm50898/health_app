@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
+import 'package:flutter_project/screens/auth/ui/forget.dart';
 import 'package:flutter_project/screens/auth/ui/login.dart';
+import 'package:flutter_project/screens/auth/ui/register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,6 +28,8 @@ class MyApp extends StatelessWidget {
         home: LoginPage(),
         routes: {
           '/login': (context) => LoginPage(),
+          '/register': (context) => RegisterPage(),
+          '/forget': (context) => ForgetPassword(),
         },
       ),
     );

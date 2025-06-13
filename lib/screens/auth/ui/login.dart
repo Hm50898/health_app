@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
 
-import '../../forget.dart';
+import 'forget.dart';
 import '../../home.dart';
-import '../../register.dart';
+import 'register.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _LogState extends State<LoginPage> {
               SnackBar(content: Text(state.errorMessage)),
             );
           }
-          if (state is AuthSuccessState) {
+          if (state is AuthLoginSuccessState) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => HomePage()),
@@ -197,7 +197,8 @@ class _LogState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Forget()),
+                        MaterialPageRoute(
+                            builder: (context) => ForgetPassword()),
                       );
                     },
                     style: TextButton.styleFrom(
@@ -257,7 +258,7 @@ class _LogState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Reg()),
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
                       );
                     },
                     style: TextButton.styleFrom(

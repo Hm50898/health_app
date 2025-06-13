@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'register.dart';
+import 'auth/ui/register.dart';
 import 'auth/ui/login.dart';
 
 void main() {
@@ -129,7 +129,7 @@ class _ChooseState extends State<Choose> {
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Reg()),
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
                     );
                   },
                   style: OutlinedButton.styleFrom(
