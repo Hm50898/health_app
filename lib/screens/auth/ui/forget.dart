@@ -26,7 +26,7 @@ class ForgetPassword extends StatelessWidget {
                 context: context,
                 builder: (_) => AlertDialog(
                   title: const Text('Error'),
-                  content: Text(state.errorMessage),
+                  content: Text(state.message),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),

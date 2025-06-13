@@ -33,11 +33,11 @@ class _GenderSelectionState extends State<GenderSelection> {
                   color: Colors.white,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Color(0xFF036666),
+                    color: const Color(0xFF036666),
                     width: 2,
                   ),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back,
                   color: Color(0xFF036666),
                   size: 24,
@@ -51,7 +51,7 @@ class _GenderSelectionState extends State<GenderSelection> {
             child: Container(
               width: 200,
               height: 200,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0x3F048581),
                 shape: BoxShape.circle,
               ),
@@ -63,7 +63,7 @@ class _GenderSelectionState extends State<GenderSelection> {
             child: Container(
               width: 160,
               height: 160,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xFF048581),
                 shape: BoxShape.circle,
               ),
@@ -75,7 +75,7 @@ class _GenderSelectionState extends State<GenderSelection> {
             child: Container(
               width: 245,
               height: 38,
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Select your Gender',
                   style: TextStyle(
@@ -104,10 +104,11 @@ class _GenderSelectionState extends State<GenderSelection> {
                 width: 180,
                 height: 180,
                 decoration: BoxDecoration(
-                  color:
-                      isMaleSelected ? Color(0xFF028887) : Colors.transparent,
+                  color: isMaleSelected
+                      ? const Color(0xFF028887)
+                      : Colors.transparent,
                   border: Border.all(
-                    color: Color(0xFF036666),
+                    color: const Color(0xFF036666),
                     width: 2,
                   ),
                   shape: BoxShape.circle,
@@ -115,7 +116,8 @@ class _GenderSelectionState extends State<GenderSelection> {
                 child: Center(
                   child: Icon(
                     Icons.male,
-                    color: isMaleSelected ? Colors.white : Color(0xFF036666),
+                    color:
+                        isMaleSelected ? Colors.white : const Color(0xFF036666),
                     size: 80,
                   ),
                 ),
@@ -137,10 +139,11 @@ class _GenderSelectionState extends State<GenderSelection> {
                 width: 180,
                 height: 180,
                 decoration: BoxDecoration(
-                  color:
-                      isFemaleSelected ? Color(0xFF028887) : Colors.transparent,
+                  color: isFemaleSelected
+                      ? const Color(0xFF028887)
+                      : Colors.transparent,
                   border: Border.all(
-                    color: Color(0xFF036666),
+                    color: const Color(0xFF036666),
                     width: 2,
                   ),
                   shape: BoxShape.circle,
@@ -148,7 +151,9 @@ class _GenderSelectionState extends State<GenderSelection> {
                 child: Center(
                   child: Icon(
                     Icons.female,
-                    color: isFemaleSelected ? Colors.white : Color(0xFF036666),
+                    color: isFemaleSelected
+                        ? Colors.white
+                        : const Color(0xFF036666),
                     size: 80,
                   ),
                 ),
@@ -162,7 +167,7 @@ class _GenderSelectionState extends State<GenderSelection> {
             child: Container(
               width: 58,
               height: 36,
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Male',
                   style: TextStyle(
@@ -182,7 +187,7 @@ class _GenderSelectionState extends State<GenderSelection> {
             child: Container(
               width: 89,
               height: 36,
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Female',
                   style: TextStyle(
@@ -217,15 +222,15 @@ class _GenderSelectionState extends State<GenderSelection> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Gender Required'),
-                        content: Text(
+                        title: const Text('Gender Required'),
+                        content: const Text(
                             'Please select your gender before proceeding.'),
                         actions: <Widget>[
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           ),
                         ],
                       );
@@ -234,13 +239,14 @@ class _GenderSelectionState extends State<GenderSelection> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF036666),
+                backgroundColor: const Color(0xFF036666),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 150, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 150, vertical: 15),
               ),
-              child: Text(
+              child: const Text(
                 'Next',
                 style: TextStyle(
                   fontSize: 20,

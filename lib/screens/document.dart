@@ -44,8 +44,9 @@ class _DocumentState extends State<Document> {
         _selectedFile = File(result.files.single.path!);
       });
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Only JPG, PNG, PDF, or JPEG files are allowed!")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content:
+              const Text("Only JPG, PNG, PDF, or JPEG files are allowed!")));
     }
   }
 
@@ -61,12 +62,11 @@ class _DocumentState extends State<Document> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 30),
-
+              const SizedBox(height: 30),
               GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -78,11 +78,11 @@ class _DocumentState extends State<Document> {
                     color: Colors.white,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Color(0xFF028887),
+                      color: const Color(0xFF028887),
                       width: 2,
                     ),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Icon(
                       Icons.arrow_back,
                       color: Color(0xFF028887),
@@ -91,8 +91,8 @@ class _DocumentState extends State<Document> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Title',
                 style: TextStyle(
                   fontFamily: 'Poppins',
@@ -103,26 +103,24 @@ class _DocumentState extends State<Document> {
                   decoration: TextDecoration.none,
                 ),
               ),
-
-              SizedBox(height: 10),
-
+              const SizedBox(height: 10),
               CustomPaint(
                 painter: DashedBorderPainter(),
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.all(8),
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: "e.g. Thyroid test analysis",
                       hintStyle: TextStyle(color: Colors.grey),
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Type',
                 style: TextStyle(
                   fontFamily: 'Poppins',
@@ -133,16 +131,16 @@ class _DocumentState extends State<Document> {
                   decoration: TextDecoration.none,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               CustomPaint(
                 painter: DashedBorderPainter(),
                 child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton2<String>(
                       isExpanded: true,
                       value: selectedType,
-                      hint: Text(
+                      hint: const Text(
                         "Select Document Type",
                         style: TextStyle(color: Colors.grey),
                       ),
@@ -157,9 +155,12 @@ class _DocumentState extends State<Document> {
                           value: value,
                           child: Container(
                             width: double.infinity,
-                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 12),
                             decoration: BoxDecoration(
-                              color: isSelected ? Color(0x4D036666) : Colors.transparent,
+                              color: isSelected
+                                  ? const Color(0x4D036666)
+                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Row(
@@ -167,27 +168,27 @@ class _DocumentState extends State<Document> {
                               children: [
                                 Text(
                                   value,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
                                 if (isSelected)
-                                  Icon(Icons.check, color: Color(0xFF036666)),
+                                  const Icon(Icons.check,
+                                      color: Color(0xFF036666)),
                               ],
                             ),
                           ),
                         );
                       }).toList(),
-
                       selectedItemBuilder: (BuildContext context) {
                         return options.map((String value) {
                           return Container(
                             alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Text(
                               value,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.normal,
                               ),
@@ -195,10 +196,9 @@ class _DocumentState extends State<Document> {
                           );
                         }).toList();
                       },
-
                       buttonStyleData: ButtonStyleData(
                         height: 50,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(5),
@@ -210,19 +210,18 @@ class _DocumentState extends State<Document> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.white,
                         ),
-                        offset: Offset(0, 5),
+                        offset: const Offset(0, 5),
                       ),
-                      iconStyleData: IconStyleData(
+                      iconStyleData: const IconStyleData(
                         icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-
+              const SizedBox(height: 20),
               if (selectedType == "Medical Image") ...[
-                Text(
+                const Text(
                   'Interpertation',
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -233,24 +232,25 @@ class _DocumentState extends State<Document> {
                     decoration: TextDecoration.none,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomPaint(
                   painter: DashedBorderPainter(),
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.all(8),
                     child: TextField(
                       decoration: InputDecoration(
                         hintText: "Enter interpertation",
                         hintStyle: TextStyle(color: Colors.grey),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
-              Positioned(
+              const Positioned(
                 top: 270,
                 left: 90,
                 child: Text(
@@ -265,7 +265,7 @@ class _DocumentState extends State<Document> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: Stack(
                   alignment: Alignment.center,
@@ -284,7 +284,7 @@ class _DocumentState extends State<Document> {
                         height: 300,
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 270,
                       left: 90,
                       child: Text(
@@ -299,7 +299,7 @@ class _DocumentState extends State<Document> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 300,
                       left: 50,
                       child: Text(
@@ -317,27 +317,30 @@ class _DocumentState extends State<Document> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              fileUploadRow("Files", _selectedFile != null, _pickFile, _removeFile),
-              SizedBox(height: 10),
+              const SizedBox(height: 20),
+              fileUploadRow(
+                  "Files", _selectedFile != null, _pickFile, _removeFile),
+              const SizedBox(height: 10),
               if (_selectedFile != null)
                 Center(
-                  child: path.extension(_selectedFile!.path).toLowerCase() == '.pdf'
+                  child: path.extension(_selectedFile!.path).toLowerCase() ==
+                          '.pdf'
                       ? Text(
-                    path.basename(_selectedFile!.path),
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  )
+                          path.basename(_selectedFile!.path),
+                          style: const TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        )
                       : ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.file(
-                      _selectedFile!,
-                      width: imageSize,
-                      height: imageSize,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(
+                            _selectedFile!,
+                            width: imageSize,
+                            height: imageSize,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Center(
                 child: GestureDetector(
                   onTap: () {
@@ -345,7 +348,8 @@ class _DocumentState extends State<Document> {
                       context: context,
                       builder: (BuildContext context) {
                         return Dialog(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
                           child: Padding(
                             padding: const EdgeInsets.all(20),
                             child: Column(
@@ -354,14 +358,15 @@ class _DocumentState extends State<Document> {
                                 Container(
                                   width: 80,
                                   height: 80,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Color(0xFF036666),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Icon(Icons.check, color: Colors.white, size: 50),
+                                  child: const Icon(Icons.check,
+                                      color: Colors.white, size: 50),
                                 ),
-                                SizedBox(height: 20),
-                                Text(
+                                const SizedBox(height: 20),
+                                const Text(
                                   'Submitted Successfully',
                                   style: TextStyle(
                                     fontSize: 18,
@@ -369,14 +374,14 @@ class _DocumentState extends State<Document> {
                                     color: Colors.black,
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 ElevatedButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text('OK'),
+                                  child: const Text('OK'),
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF036666),
+                                    backgroundColor: const Color(0xFF036666),
                                     foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
@@ -394,13 +399,16 @@ class _DocumentState extends State<Document> {
                     width: 345,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Color(0xFF036666),
+                      color: const Color(0xFF036666),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         'Submit',
-                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -413,7 +421,8 @@ class _DocumentState extends State<Document> {
     );
   }
 
-  Widget fileUploadRow(String label, bool isUploaded, Function onUpload, Function onDelete) {
+  Widget fileUploadRow(
+      String label, bool isUploaded, Function onUpload, Function onDelete) {
     return Row(
       children: [
         Container(
@@ -421,12 +430,14 @@ class _DocumentState extends State<Document> {
           height: 30,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Color(0xFF036666), width: 2),
+            border: Border.all(color: const Color(0xFF036666), width: 2),
             color: Colors.white,
           ),
-          child: isUploaded ? Icon(Icons.check, color: Color(0xFF036666), size: 20) : null,
+          child: isUploaded
+              ? const Icon(Icons.check, color: Color(0xFF036666), size: 20)
+              : null,
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: () => onUpload(),
           child: Container(
@@ -440,16 +451,19 @@ class _DocumentState extends State<Document> {
             child: Center(
               child: Text(
                 label,
-                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
         ),
-        Spacer(),
+        const Spacer(),
         if (isUploaded)
           GestureDetector(
             onTap: () => onDelete(),
-            child: Icon(Icons.delete, color: Color(0xFF036666), size: 25),
+            child: const Icon(Icons.delete, color: Color(0xFF036666), size: 25),
           ),
       ],
     );
@@ -464,8 +478,7 @@ class DashedBorderPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 
-    Path path = Path()
-      ..addRect(Offset.zero & size);
+    Path path = Path()..addRect(Offset.zero & size);
 
     const dashWidth = 5.0;
     const dashSpace = 5.0;
@@ -489,6 +502,7 @@ class DashedBorderPainter extends CustomPainter {
       }
     }
   }
+
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;

@@ -14,11 +14,9 @@ class Family extends StatelessWidget {
       home: Scaffold(
         body: Stack(
           children: [
-
             Container(
               color: Colors.white,
             ),
-
             Positioned(
               top: 50,
               left: 20,
@@ -30,12 +28,12 @@ class Family extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Color(0xFF036666),
+                        color: const Color(0xFF036666),
                         width: 2,
                       ),
                     ),
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back,
                         color: Color(0xFF036666),
                         size: 20,
@@ -45,10 +43,8 @@ class Family extends StatelessWidget {
                       },
                     ),
                   ),
-
-                  SizedBox(width: 10),
-
-                  Text(
+                  const SizedBox(width: 10),
+                  const Text(
                     'New Family member',
                     style: TextStyle(
                       color: Color(0xFF036666),
@@ -65,7 +61,7 @@ class Family extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFFF0F0F0),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
@@ -77,36 +73,34 @@ class Family extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        SizedBox(height: 30),
-
+                        const SizedBox(height: 30),
                         Image.asset(
                           'images/family.png',
                           width: 400,
                           height: 300,
                           fit: BoxFit.cover,
                         ),
-
-                        SizedBox(height: 20),
-
+                        const SizedBox(height: 20),
                         Container(
                           width: 280,
                           child: TextField(
                             decoration: InputDecoration(
                               hintText: 'National ID',
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                 color: Color(0xFF048581),
                               ),
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 14),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Color(0xFF0000002B),
                                 ),
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   color: Color(0xFF0000002B),
                                 ),
                                 borderRadius: BorderRadius.circular(15),
@@ -114,9 +108,7 @@ class Family extends StatelessWidget {
                             ),
                           ),
                         ),
-
-                        SizedBox(height: 30),
-
+                        const SizedBox(height: 30),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: Row(
@@ -129,23 +121,25 @@ class Family extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 90),
+                        const SizedBox(height: 90),
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => AddFamilyMemberPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => AddFamilyMemberPage()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
-                            backgroundColor: Color(0xFF036666),
+                            backgroundColor: const Color(0xFF036666),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 100),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 14, horizontal: 100),
                           ),
-                          child: Text(
+                          child: const Text(
                             'Request',
                             style: TextStyle(
                               fontSize: 16,
@@ -165,20 +159,19 @@ class Family extends StatelessWidget {
               child: Container(
                 width: 200,
                 height: 200,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0x3F048581),
                   shape: BoxShape.circle,
                 ),
               ),
             ),
-
             Positioned(
               top: -5,
               left: 330,
               child: Container(
                 width: 160,
                 height: 160,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xFF048581),
                   shape: BoxShape.circle,
                 ),
@@ -189,11 +182,12 @@ class Family extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildNumberField() {
     return Container(
       width: 50,
       decoration: BoxDecoration(
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Color(0x40000000),
             spreadRadius: 1,
@@ -208,16 +202,17 @@ class Family extends StatelessWidget {
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Color(0xFF257044B2),
             ),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0xFF257044B2),
+            borderSide: const BorderSide(
+              color: const Color(0xFF257044B2),
             ),
             borderRadius: BorderRadius.circular(10),
           ),

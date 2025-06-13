@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
 
 import 'forget.dart';
-import '../../home.dart';
+import '../../home/cubit/ui/home.dart';
 import 'register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _LogState extends State<LoginPage> {
         listener: (context, state) {
           if (state is AuthErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage)),
+              SnackBar(content: Text(state.message)),
             );
           }
           if (state is AuthLoginSuccessState) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
-import '../../gend.dart';
+import '../../gender.dart';
 
 class RegisterPage extends StatelessWidget {
   final _firstNameController = TextEditingController();
@@ -25,7 +25,7 @@ class RegisterPage extends StatelessWidget {
         }
         if (state is AuthErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage)),
+            SnackBar(content: Text(state.message)),
           );
         }
       },
@@ -107,7 +107,7 @@ class RegisterPage extends StatelessWidget {
                       top: 120,
                       left: MediaQuery.of(context).size.width / 2 - 50,
                       child: GestureDetector(
-                        onTap: () => authCubit.pickImage(),
+                        onTap: () => authCubit.pickImage,
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
@@ -131,7 +131,7 @@ class RegisterPage extends StatelessWidget {
                               right: 0,
                               bottom: 0,
                               child: GestureDetector(
-                                onTap: () => authCubit.pickImage(),
+                                onTap: () => authCubit.pickImage,
                                 child: CircleAvatar(
                                   radius: 20,
                                   backgroundColor: const Color(0xFFF0F0F0),

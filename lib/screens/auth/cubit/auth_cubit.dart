@@ -1,37 +1,88 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_project/cosntants.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_states.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState());
-  final ImagePicker _picker = ImagePicker();
+
+  final ImagePicker pickImage = ImagePicker();
   File? _profileImage;
+  String? _token;
 
   File? get profileImage => _profileImage;
+  String? get token => _token;
 
-  Future<void> pickImage() async {
+  Future<void> initialize() async {
+    emit(AuthLoadingState());
+    await _loadToken();
+  }
+
+  Future<void> _loadToken() async {
     try {
-      final image = await _picker.pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        _profileImage = File(image.path);
+      final prefs = await SharedPreferences.getInstance();
+      _token = prefs.getString(tokenKey);
+
+      if (_token != null && _token!.isNotEmpty) {
+        emit(AuthLoginSuccessState(_token!));
+      } else {
         emit(AuthInitialState());
       }
     } catch (e) {
-      emit(AuthErrorState('Failed to pick image: $e'));
+      emit(AuthErrorState('Failed to load token: $e'));
+    }
+  }
+
+  Future<void> _saveToken(String token) async {
+    try {
+      if (token.isEmpty) {
+        throw Exception('Token cannot be empty');
+      }
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(tokenKey, token);
+      _token = token;
+      debugPrint('Token saved successfully');
+    } catch (e) {
+      emit(AuthErrorState('Failed to save token: $e'));
+      rethrow;
+    }
+  }
+
+  Future<void> _clearToken() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(tokenKey);
+      _token = null;
+      debugPrint('Token cleared successfully');
+    } catch (e) {
+      emit(AuthErrorState('Failed to clear token: $e'));
+      rethrow;
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      emit(AuthLoadingState());
+      await _clearToken();
+      emit(AuthLogoutSuccessState());
+    } catch (e) {
+      emit(AuthErrorState('Logout failed: $e'));
     }
   }
 
   Future<void> login(String email, String password) async {
     emit(AuthLoadingState());
 
-    final url = Uri.parse('http://healthmate.runasp.net/api/Account/Login');
     try {
       final response = await http.post(
-        url,
+        Uri.parse('$baseUrl/Account/Login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
@@ -42,15 +93,14 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
-        final token = responseBody['token'];
-        emit(AuthLoginSuccessState(token));
+        await _saveToken(responseBody['jwtToken']);
+        emit(AuthLoginSuccessState(_token!));
       } else {
-        final errorMessage =
-            jsonDecode(response.body)['message'] ?? 'Login failed';
-        emit(AuthErrorState(errorMessage));
+        final error = jsonDecode(response.body)['message'] ?? 'Login failed';
+        emit(AuthErrorState(error));
       }
     } catch (e) {
-      emit(AuthErrorState('Error occurred: $e'));
+      emit(AuthErrorState('Login error: ${e.toString()}'));
     }
   }
 
@@ -64,7 +114,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(AuthLoadingState());
 
-    final uri = Uri.parse("http://healthmate.runasp.net/api/Account/Register");
+    final uri = Uri.parse("$baseUrl/Account/Register");
     try {
       var request = http.MultipartRequest("POST", uri);
 
@@ -107,7 +157,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoadingState());
 
     final url = Uri.parse(
-      'https://healthmate.runasp.net/api/Account/send-verification-code?emailAddress=$email',
+      '$baseUrl/Account/send-verification-code?emailAddress=$email',
     );
 
     try {

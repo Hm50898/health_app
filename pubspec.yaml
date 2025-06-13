@@ -42,10 +42,11 @@ dependencies:
   cupertino_icons: ^1.0.6
   introduction_screen: ^3.1.14
   http: ^1.2.2
-  shared_preferences: ^2.1.0
+  shared_preferences: 
   lucide_icons_flutter: ^3.0.3
   flutter_bloc: ^9.1.1
   bloc:
+  
 
 
 dev_dependencies:
