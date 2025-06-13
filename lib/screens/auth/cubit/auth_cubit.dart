@@ -12,12 +12,23 @@ part 'auth_states.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitialState());
 
+  File? get profileImage => _profileImage;
+  String? get token => _token;
   final ImagePicker pickImage = ImagePicker();
   File? _profileImage;
   String? _token;
 
-  File? get profileImage => _profileImage;
-  String? get token => _token;
+  Future<void> pickProfileImage() async {
+    try {
+      final pickedFile = await pickImage.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        _profileImage = File(pickedFile.path);
+        emit(AuthInitialState()); // To rebuild the UI
+      }
+    } catch (e) {
+      emit(AuthErrorState('Failed to pick image: $e'));
+    }
+  }
 
   Future<void> initialize() async {
     emit(AuthLoadingState());
@@ -125,11 +136,11 @@ class AuthCubit extends Cubit<AuthState> {
       request.fields['passwordConfirmed'] = confirmPassword;
       request.fields['PhoneNumber'] = phoneNumber;
       request.fields['userType'] = '0';
-
-      if (_profileImage != null) {
-        request.files.add(
-            await http.MultipartFile.fromPath('Image', _profileImage!.path));
-      }
+      request.fields['Image'] = '010110101010101010100101';
+      // request.files.add(
+      //   await http.MultipartFile.fromPath(
+      //       'Image', _profileImage?.path ?? 'images/add personal photo.png'),
+      // );
 
       final response = await request.send();
       final respStr = await response.stream.bytesToString();
@@ -144,6 +155,10 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthErrorState(errorMessage));
       }
     } catch (e) {
+      debugPrint('ffffffffffffffffffffffffffffffffffffffffffffff');
+      debugPrint('Error during registration: $e');
+      debugPrint('ffffffffffffffffffffffffffffffffffffffffffffff');
+      print('ffffffffffffffffffffffffffffffffffffffffffffff');
       emit(AuthErrorState('Error occurred: $e'));
     }
   }
