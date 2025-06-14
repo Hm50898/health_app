@@ -85,28 +85,28 @@ class _LogState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 45,
-                    left: 20,
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: const Color(0xFF028887), width: 2),
-                          ),
-                          child: const Icon(Icons.arrow_back,
-                              color: Color(0xFF028887), size: 20),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 45,
+                  //   left: 20,
+                  //   child: Align(
+                  //     alignment: Alignment.topLeft,
+                  //     child: GestureDetector(
+                  //       onTap: () => Navigator.pop(context),
+                  //       child: Container(
+                  //         width: 40,
+                  //         height: 40,
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.white,
+                  //           shape: BoxShape.circle,
+                  //           border: Border.all(
+                  //               color: const Color(0xFF028887), width: 2),
+                  //         ),
+                  //         child: const Icon(Icons.arrow_back,
+                  //             color: Color(0xFF028887), size: 20),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Positioned(
                     top: 90,
                     left: 130,

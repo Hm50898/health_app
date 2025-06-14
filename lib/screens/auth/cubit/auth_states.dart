@@ -27,6 +27,8 @@ class AuthSendVerificationCodeSuccessState extends AuthState {
 
 class AuthVerifyCodeSuccessState extends AuthState {}
 
+class AuthResetPasswordSuccessState extends AuthState {}
+
 class AuthForgetPasswordSuccessState extends AuthState {
   final String email;
   AuthForgetPasswordSuccessState(this.email);

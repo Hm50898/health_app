@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/screens/create.dart';
+import 'package:flutter_project/screens/auth/ui/createNewPassword.dart';
 
 void main() {
   runApp(Successfully(
@@ -96,7 +96,10 @@ class Successfully extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Create(email: email)),
+                  MaterialPageRoute(
+                      builder: (context) => CreateNewPassword(
+                            email: email,
+                          )),
                 );
               },
               child: Container(

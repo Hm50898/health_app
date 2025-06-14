@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 part 'auth_states.dart';
 
@@ -67,6 +68,28 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> _saveUserData(String userId, String patientId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(userIdKey, userId);
+      await prefs.setString(patientIdKey, patientId);
+      debugPrint('User data saved successfully');
+    } catch (e) {
+      debugPrint('Failed to save user data: $e');
+    }
+  }
+
+  Future<void> _clearUserData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(userIdKey);
+      await prefs.remove(patientIdKey);
+      debugPrint('User data cleared successfully');
+    } catch (e) {
+      debugPrint('Failed to clear user data: $e');
+    }
+  }
+
   Future<void> _clearToken() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -83,6 +106,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(AuthLoadingState());
       await _clearToken();
+      await _clearUserData();
       emit(AuthLogoutSuccessState());
     } catch (e) {
       emit(AuthErrorState('Logout failed: $e'));
@@ -105,7 +129,23 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
-        await _saveToken(responseBody['jwtToken']);
+        final token = responseBody['jwtToken'];
+
+        // Decode and print JWT token contents
+        if (token != null) {
+          Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+          debugPrint('JWT Token Contents: $decodedToken');
+
+          // Save user ID and patient ID
+          final userId = decodedToken['sub'];
+          final patientId = decodedToken['PatientId'].toString();
+          await _saveUserData(userId, patientId);
+
+          debugPrint('User ID: $userId');
+          debugPrint('Patient ID: $patientId');
+        }
+
+        await _saveToken(token);
         emit(AuthLoginSuccessState(_token!));
       } else {
         final responseBody = jsonDecode(response.body);
@@ -194,24 +234,49 @@ class AuthCubit extends Cubit<AuthState> {
 
     emit(AuthLoadingState());
 
-    final url = Uri.parse(
-      '$baseUrl/Account/send-verification-code?emailAddress=$email',
-    );
-
     try {
-      final response = await http.get(url);
+      final response = await http.post(
+        Uri.parse(
+            '$baseUrl/Account/send-verification-code?emailAddress=$email'),
+      );
 
       if (response.statusCode == 200) {
         emit(AuthForgetPasswordSuccessState(email));
       } else {
-        emit(AuthErrorState(
-          'Failed to send verification code. Please try again.',
-        ));
+        final errorData = json.decode(response.body);
+        final errorMessage =
+            errorData['message'] ?? 'Failed to send verification code';
+        emit(AuthErrorState(errorMessage));
       }
     } catch (e) {
       emit(AuthErrorState(
-        'An error occurred. Please check your internet connection.',
-      ));
+          'Failed to send verification code. Please try again.'));
+    }
+  }
+
+  Future<void> verifyCode(String email, String code) async {
+    emit(AuthLoadingState());
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/Account/verify-code'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'code': code,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        emit(AuthVerifyCodeSuccessState());
+      } else {
+        final errorData = json.decode(response.body);
+        final errorMessage = errorData['message'] ?? 'Verification failed';
+        emit(AuthErrorState(errorMessage));
+      }
+    } catch (e) {
+      debugPrint('Verify code error: $e');
+      emit(AuthErrorState('Verification failed. Please try again.'));
     }
   }
 
@@ -228,7 +293,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/Patient'),
+        Uri.parse('$baseUrl/Account/Patient'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -264,7 +329,8 @@ class AuthCubit extends Cubit<AuthState> {
 
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/send-verification-code?emailAddress=$email'),
+        Uri.parse(
+            '$baseUrl/Account/send-verification-code?emailAddress=$email'),
       );
 
       if (response.statusCode == 200) {
@@ -282,29 +348,32 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> verifyCode(String email, String code) async {
+  Future<void> resetPassword({
+    required String email,
+    required String newPassword,
+  }) async {
     emit(AuthLoadingState());
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/verify-code'),
+        Uri.parse('$baseUrl/Account/forgot-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'email': email,
-          'code': code,
+          'emailAddress': email,
+          'newPassword': newPassword,
         }),
       );
 
       if (response.statusCode == 200) {
-        emit(AuthVerifyCodeSuccessState());
+        emit(AuthResetPasswordSuccessState());
       } else {
         final errorData = json.decode(response.body);
-        final errorMessage = errorData['message'] ?? 'Verification failed';
+        final errorMessage = errorData['message'] ?? 'Failed to reset password';
         emit(AuthErrorState(errorMessage));
       }
     } catch (e) {
-      debugPrint('Verify code error: $e');
-      emit(AuthErrorState('Verification failed. Please try again.'));
+      debugPrint('Reset password error: $e');
+      emit(AuthErrorState('Failed to reset password. Please try again.'));
     }
   }
 }

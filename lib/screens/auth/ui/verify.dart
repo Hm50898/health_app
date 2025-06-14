@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
-import 'package:flutter_project/screens/auth/ui/login.dart';
+import 'package:flutter_project/screens/auth/ui/createNewPassword.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Verify extends StatefulWidget {
   final String email;
@@ -13,42 +14,55 @@ class Verify extends StatefulWidget {
 }
 
 class _VerifyState extends State<Verify> {
-  final TextEditingController codeController1 = TextEditingController();
-  final TextEditingController codeController2 = TextEditingController();
-  final TextEditingController codeController3 = TextEditingController();
-  final TextEditingController codeController4 = TextEditingController();
+  final TextEditingController codeController = TextEditingController();
+  bool hasError = false;
+  String currentText = "";
+  int resendAttempts = 0;
+  bool canResend = true;
 
   @override
   void initState() {
     super.initState();
-    // إرسال كود التحقق عند فتح الصفحة
     context.read<AuthCubit>().sendVerificationCode(widget.email);
   }
 
   @override
   void dispose() {
-    codeController1.dispose();
-    codeController2.dispose();
-    codeController3.dispose();
-    codeController4.dispose();
+    codeController.dispose();
     super.dispose();
   }
 
   void _verifyCode() {
-    String code = codeController1.text +
-        codeController2.text +
-        codeController3.text +
-        codeController4.text;
-
-    if (code.length == 4) {
-      context.read<AuthCubit>().verifyCode(widget.email, code);
+    if (currentText.length == 4) {
+      context.read<AuthCubit>().verifyCode(widget.email, currentText);
     } else {
+      setState(() {
+        hasError = true;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter the complete verification code'),
           backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
         ),
       );
+    }
+  }
+
+  void _resendCode() {
+    if (canResend) {
+      context.read<AuthCubit>().sendVerificationCode(widget.email);
+      setState(() {
+        resendAttempts++;
+        canResend = false;
+      });
+      Future.delayed(const Duration(seconds: 60), () {
+        if (mounted) {
+          setState(() {
+            canResend = true;
+          });
+        }
+      });
     }
   }
 
@@ -57,10 +71,11 @@ class _VerifyState extends State<Verify> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthVerifyCodeSuccessState) {
-          Navigator.pushAndRemoveUntil(
+          Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-            (route) => false,
+            MaterialPageRoute(
+              builder: (context) => CreateNewPassword(email: widget.email),
+            ),
           );
         }
         if (state is AuthErrorState) {
@@ -76,21 +91,19 @@ class _VerifyState extends State<Verify> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: 50,
-                    left: 20,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        width: 25.12,
-                        height: 26.16,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Container(
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
@@ -106,12 +119,8 @@ class _VerifyState extends State<Verify> {
                         ),
                       ),
                     ),
-                  ),
-                  const Positioned(
-                    top: 45,
-                    left: 93,
-                    child: Opacity(
-                      opacity: 1.0,
+                    const SizedBox(height: 20),
+                    const Center(
                       child: Text(
                         'Verify Your Email',
                         style: TextStyle(
@@ -119,144 +128,141 @@ class _VerifyState extends State<Verify> {
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF048581),
-                          height: 36 / 24,
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 166,
-                    left: 48,
-                    child: Container(
-                      width: 300,
-                      height: 300,
-                      decoration: const BoxDecoration(
-                        color: Color(0x1A048581),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 216,
-                    left: 96,
-                    child: Opacity(
-                      opacity: 1.0,
-                      child: Image(
-                        image: AssetImage('images/mail.png'),
+                    const SizedBox(height: 40),
+                    Center(
+                      child: Container(
                         width: 200,
                         height: 200,
+                        decoration: BoxDecoration(
+                          color: const Color(0x1A048581),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Image(
+                            image: AssetImage('images/mail.png'),
+                            width: 120,
+                            height: 120,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 480,
-                    left: 46,
-                    child: Container(
-                      width: 300,
-                      height: 60,
-                      alignment: Alignment.center,
+                    const SizedBox(height: 40),
+                    Center(
                       child: Text(
-                        'Verification code sent to: ${widget.email}',
+                        'Verification code sent to:\n${widget.email}',
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: 'Poppins',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
                           color: Color(0xFF000000),
-                          height: 30 / 20,
+                          height: 1.5,
                         ),
                       ),
                     ),
-                  ),
-                  for (int i = 0; i < 4; i++)
-                    Positioned(
-                      top: 580,
-                      left: 46.0 + i * 82,
-                      child: Container(
-                        width: 48,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: const Color.fromRGBO(37, 112, 68, 0.7),
-                            width: 2,
-                          ),
+                    const SizedBox(height: 40),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: PinCodeTextField(
+                        appContext: context,
+                        pastedTextStyle: const TextStyle(
+                          color: Color(0xFF048581),
+                          fontWeight: FontWeight.bold,
                         ),
-                        child: TextField(
-                          controller: [
-                            codeController1,
-                            codeController2,
-                            codeController3,
-                            codeController4
-                          ][i],
-                          maxLength: 1,
-                          textAlign: TextAlign.center,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            counterText: "",
-                          ),
-                        ),
-                      ),
-                    ),
-                  Positioned(
-                    top: 630,
-                    left: 140,
-                    child: TextButton(
-                      onPressed: () {
-                        context
-                            .read<AuthCubit>()
-                            .sendVerificationCode(widget.email);
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: const Text(
-                        'Resend Code',
-                        style: TextStyle(
-                          color: Color(0x4D000000),
-                          fontFamily: 'Poppins',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 690,
-                    left: 24,
-                    child: GestureDetector(
-                      onTap: state is AuthLoadingState ? null : _verifyCode,
-                      child: Container(
-                        width: 345,
-                        height: 49,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 0),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF048581),
+                        length: 4,
+                        obscureText: false,
+                        obscuringCharacter: '*',
+                        animationType: AnimationType.fade,
+                        pinTheme: PinTheme(
+                          shape: PinCodeFieldShape.box,
                           borderRadius: BorderRadius.circular(10),
+                          fieldHeight: 50,
+                          fieldWidth: 50,
+                          activeFillColor: Colors.white,
+                          activeColor: const Color(0xFF048581),
+                          selectedColor: const Color(0xFF048581),
+                          inactiveColor: const Color(0xFF048581),
                         ),
-                        child: Center(
+                        cursorColor: const Color(0xFF048581),
+                        animationDuration: const Duration(milliseconds: 300),
+                        enableActiveFill: false,
+                        errorAnimationController: null,
+                        controller: codeController,
+                        keyboardType: TextInputType.number,
+                        onCompleted: (v) {
+                          _verifyCode();
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            currentText = value;
+                            hasError = false;
+                          });
+                        },
+                        beforeTextPaste: (text) {
+                          return true;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: TextButton(
+                        onPressed: canResend ? _resendCode : null,
+                        child: Text(
+                          canResend
+                              ? 'Resend Code'
+                              : 'Wait ${60 - (resendAttempts * 60)} seconds',
+                          style: TextStyle(
+                            color: canResend
+                                ? const Color(0xFF048581)
+                                : Colors.grey,
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 40),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed:
+                              state is AuthLoadingState ? null : _verifyCode,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF048581),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                           child: state is AuthLoadingState
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white)
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                )
                               : const Text(
                                   'Verify',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: 'Poppins',
-                                    height: 1.5,
                                   ),
                                 ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

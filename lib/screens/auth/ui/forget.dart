@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
-import 'package:flutter_project/screens/auth/ui/Ver.dart' show Ver;
+import 'package:flutter_project/screens/auth/ui/verify.dart';
 
 class ForgetPassword extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -17,7 +17,7 @@ class ForgetPassword extends StatelessWidget {
             if (state is AuthForgetPasswordSuccessState) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => Ver(email: state.email)),
+                MaterialPageRoute(builder: (_) => Verify(email: state.email)),
               );
             }
             if (state is AuthErrorState) {
