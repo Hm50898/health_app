@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
 
 import 'forget.dart';
-import '../../home/cubit/ui/home.dart';
+import '../../home/ui/home.dart';
 import 'register.dart';
 
 class LoginPage extends StatefulWidget {

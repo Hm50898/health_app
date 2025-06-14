@@ -3,20 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/cosntants.dart';
 import 'package:flutter_project/screens/home/cubit/home_states.dart';
-import 'package:flutter_project/screens/home/cubit/ui/components/actionButton.dart';
-import 'package:flutter_project/screens/home/cubit/ui/components/homeDrawer.dart';
-import 'package:flutter_project/screens/home/cubit/ui/components/serviceItem.dart';
+import 'package:flutter_project/screens/home/ui/components/actionButton.dart';
+import 'package:flutter_project/screens/home/ui/components/homeDrawer.dart';
+import 'package:flutter_project/screens/home/ui/components/serviceItem.dart';
 import 'package:flutter_project/screens/privacy.dart';
 import 'package:flutter_project/screens/profile.dart';
 import 'package:flutter_project/screens/recommendation.dart';
-import 'package:flutter_project/screens/services.dart';
+import 'package:flutter_project/screens/home/ui/services.dart';
 import 'package:flutter_project/screens/medicine.dart';
 import 'package:flutter_project/screens/document.dart';
 import 'package:flutter_project/screens/setting/setting.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
-import '../../../family.dart';
-import '../generalHealth.dart';
-import '../../../help.dart';
+import '../../family.dart';
+import 'generalHealth.dart';
+import '../../help.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: Colors.white.withOpacity(0.2),
               leading: IconButton(
-                icon: const Icon(Icons.menu, color: mainColor),
+                icon: const Icon(Icons.menu, color: Color(0xFF036666)),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
               elevation: 0,
@@ -64,10 +64,10 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Hello, Ali',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
-                                color: mainColor)),
+                                color: Color(0xFF036666))),
                         const SizedBox(height: 4),
                         const Text(
                           'Save time and money, get the best medical service.',
@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
                               height: 1.5,
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w500,
-                              color: mainColor),
+                              color: Color(0xFF036666)),
                         ),
                         const SizedBox(height: 8),
                         _buildSearchBar(),
@@ -91,7 +91,7 @@ class HomePage extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
-                                  color: mainColor),
+                                  color: Color(0xFF036666)),
                             ),
                             TextButton(
                               style: TextButton.styleFrom(
@@ -113,7 +113,8 @@ class HomePage extends StatelessWidget {
                                 'See all',
                                 style: TextStyle(
                                     fontSize: 14,
-                                    color: mainColor.withOpacity(0.52),
+                                    color: const Color(0xFF036666)
+                                        .withOpacity(0.52),
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -123,7 +124,6 @@ class HomePage extends StatelessWidget {
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // ignore: prefer_const_constructors
                             ServiceItem(
                               imagePath: 'images/Primary(2).png',
                               label: 'Medicine',
@@ -249,7 +249,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // باقي الدوال المساعدة تبقى كما هي بدون تغيير
   Widget _buildSearchBar() {
     return Container(
       width: 349,
@@ -282,7 +281,7 @@ class HomePage extends StatelessWidget {
       height: 194,
       decoration: BoxDecoration(
         color: const Color(0xFFA3DAF2),
-        borderRadius: borderRadius,
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Row(
         children: [
@@ -344,7 +343,7 @@ class HomePage extends StatelessWidget {
       clipBehavior: Clip.none,
       decoration: BoxDecoration(
         color: const Color(0xFFA3DAF2),
-        borderRadius: borderRadius,
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -380,7 +379,7 @@ class HomePage extends StatelessWidget {
             left: 280,
             child: FloatingActionButton(
               mini: true,
-              backgroundColor: mainColor,
+              backgroundColor: const Color(0xFF036666),
               onPressed: () {
                 cubit.toggleButtonsVisibility();
               },

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(prescription());
-}
+class PrescriptionPage extends StatefulWidget {
+  const PrescriptionPage({super.key});
 
-class prescription extends StatefulWidget {
   @override
   _mdetailState createState() => _mdetailState();
 }
 
-class _mdetailState extends State<prescription> {
+class _mdetailState extends State<PrescriptionPage> {
   final TextStyle fadedTextStyle = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.41),
     fontWeight: FontWeight.bold,
@@ -65,7 +63,8 @@ class _mdetailState extends State<prescription> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -107,7 +106,6 @@ class _mdetailState extends State<prescription> {
                   ],
                 ),
               ),
-
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -176,7 +174,9 @@ class _mdetailState extends State<prescription> {
                                 children: [
                                   Row(
                                     children: [
-                                      Expanded(child: Text(record['doctor'] ?? '', textAlign: TextAlign.right)),
+                                      Expanded(
+                                          child: Text(record['doctor'] ?? '',
+                                              textAlign: TextAlign.right)),
                                       SizedBox(width: 10),
                                       Text('Doctor', style: fadedTextStyle),
                                     ],
@@ -184,7 +184,9 @@ class _mdetailState extends State<prescription> {
                                   SizedBox(height: 5),
                                   Row(
                                     children: [
-                                      Expanded(child: Text(record['med1'] ?? '', textAlign: TextAlign.right)),
+                                      Expanded(
+                                          child: Text(record['med1'] ?? '',
+                                              textAlign: TextAlign.right)),
                                       SizedBox(width: 10),
                                       Text('Medicine 1', style: fadedTextStyle),
                                     ],
@@ -192,7 +194,9 @@ class _mdetailState extends State<prescription> {
                                   SizedBox(height: 5),
                                   Row(
                                     children: [
-                                      Expanded(child: Text(record['med2'] ?? '', textAlign: TextAlign.right)),
+                                      Expanded(
+                                          child: Text(record['med2'] ?? '',
+                                              textAlign: TextAlign.right)),
                                       SizedBox(width: 10),
                                       Text('Medicine 2', style: fadedTextStyle),
                                     ],
@@ -200,7 +204,9 @@ class _mdetailState extends State<prescription> {
                                   SizedBox(height: 5),
                                   Row(
                                     children: [
-                                      Expanded(child: Text(record['med3'] ?? '', textAlign: TextAlign.right)),
+                                      Expanded(
+                                          child: Text(record['med3'] ?? '',
+                                              textAlign: TextAlign.right)),
                                       SizedBox(width: 10),
                                       Text('Medicine 3', style: fadedTextStyle),
                                     ],
@@ -208,7 +214,6 @@ class _mdetailState extends State<prescription> {
                                 ],
                               ),
                             ),
-
                           ],
                         ),
                       ),

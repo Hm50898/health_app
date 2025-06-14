@@ -23,3 +23,15 @@ class DashboardError extends HomeState {
   final String message;
   DashboardError(this.message);
 }
+
+class HealthRecordSummaryLoading extends HomeState {}
+
+class HealthRecordSummaryLoaded extends HomeState {
+  final Map<String, dynamic> summaryData;
+  HealthRecordSummaryLoaded(this.summaryData);
+}
+
+class HealthRecordSummaryError extends HomeState {
+  final String message;
+  HealthRecordSummaryError(this.message);
+}

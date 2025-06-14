@@ -3,20 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import 'package:flutter_project/screens/home/cubit/home_states.dart';
 
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: GeneralHealth(),
-    );
-  }
-}
-
 class GeneralHealth extends StatelessWidget {
   const GeneralHealth({super.key});
 
@@ -261,46 +247,6 @@ class GeneralHealth extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Hello, Ali',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF036666),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      const Text(
-                        'Check your health.',
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        width: 349,
-                        height: 48,
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: const Color(0xFF036666)),
-                        ),
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            hintText: 'Search',
-                            hintStyle: TextStyle(
-                              color: Color(0x80048581),
-                              fontSize: 18,
-                              fontFamily: 'Poppins',
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 7, horizontal: 15),
-                            suffixIcon: Icon(Icons.search,
-                                color: Color(0xFF036666), size: 30),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
                       Row(
                         children: [
                           Expanded(
