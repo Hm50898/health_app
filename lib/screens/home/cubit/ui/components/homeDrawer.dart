@@ -5,7 +5,7 @@ import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
 import 'package:flutter_project/screens/auth/ui/login.dart';
 import 'package:flutter_project/screens/help.dart';
 import 'package:flutter_project/screens/privacy.dart';
-import 'package:flutter_project/screens/setting.dart';
+import 'package:flutter_project/screens/setting/setting.dart';
 
 class Homedrawer extends StatelessWidget {
   const Homedrawer({super.key});

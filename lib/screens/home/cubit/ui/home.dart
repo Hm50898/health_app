@@ -12,7 +12,7 @@ import 'package:flutter_project/screens/recommendation.dart';
 import 'package:flutter_project/screens/services.dart';
 import 'package:flutter_project/screens/medicine.dart';
 import 'package:flutter_project/screens/document.dart';
-import 'package:flutter_project/screens/setting.dart';
+import 'package:flutter_project/screens/setting/setting.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import '../../../family.dart';
 import '../../../general.dart';

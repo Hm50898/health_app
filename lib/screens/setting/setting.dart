@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'change.dart';
+import 'changePassword.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -41,7 +41,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.arrow_back, color: Color(0xFF036666), size: 20),
+                  child: const Icon(Icons.arrow_back,
+                      color: Color(0xFF036666), size: 20),
                 ),
               ),
               const SizedBox(width: 12),
@@ -61,16 +62,17 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-
             InkWell(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChangePasswordPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const ChangePasswordPage()),
                 );
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade300),
                   borderRadius: BorderRadius.circular(10),
@@ -107,7 +109,7 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 const Text(
                   'Language',
-                  style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 DropdownButton<String>(
                   value: selectedLanguage,
@@ -161,7 +163,9 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+          Text(label,
+              style:
+                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           Switch(
             activeColor: const Color(0xFF036666),
             value: value,
