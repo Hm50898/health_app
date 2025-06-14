@@ -50,6 +50,7 @@ dependencies:
   bloc:
   logger:
   intl:
+  equatable: 
   
 
 

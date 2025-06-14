@@ -15,7 +15,7 @@ import 'package:flutter_project/screens/document.dart';
 import 'package:flutter_project/screens/setting/setting.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import '../../../family.dart';
-import '../../../general.dart';
+import '../generalHealth.dart';
 import '../../../help.dart';
 
 class HomePage extends StatelessWidget {
@@ -143,7 +143,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (cubit.showButtons)
+                if (cubit.isButtonsVisible)
                   Positioned(
                     right: 16,
                     bottom: 130,
@@ -197,7 +197,7 @@ class HomePage extends StatelessWidget {
               unselectedItemColor: Colors.white70,
               currentIndex: cubit.selectedIndex,
               onTap: (index) {
-                cubit.changeSelectedIndex(index);
+                cubit.changeIndex(index);
                 if (index == 2) {
                   Navigator.push(
                     context,
@@ -384,7 +384,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 cubit.toggleButtonsVisibility();
               },
-              child: Icon(cubit.showButtons ? Icons.close : Icons.add),
+              child: Icon(cubit.isButtonsVisible ? Icons.close : Icons.add),
             ),
           ),
         ],

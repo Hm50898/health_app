@@ -5,6 +5,8 @@ import 'package:flutter_project/screens/auth/ui/forget.dart';
 import 'package:flutter_project/screens/auth/ui/login.dart';
 import 'package:flutter_project/screens/auth/ui/register.dart';
 import 'package:flutter_project/screens/home/cubit/ui/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'cosntants.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
