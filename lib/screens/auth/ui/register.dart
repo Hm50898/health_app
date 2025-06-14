@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
-import '../../gender.dart';
+import 'gender.dart';
 
 class RegisterPage extends StatefulWidget {
   @override

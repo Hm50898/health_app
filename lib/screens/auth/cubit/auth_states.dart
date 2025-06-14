@@ -18,6 +18,8 @@ class AuthRegisterSuccessState extends AuthState {
   AuthRegisterSuccessState(this.userId);
 }
 
+class AuthPatientRegisterSuccessState extends AuthState {}
+
 class AuthForgetPasswordSuccessState extends AuthState {
   final String email;
   AuthForgetPasswordSuccessState(this.email);

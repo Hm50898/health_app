@@ -6,6 +6,7 @@ import 'package:flutter_project/cosntants.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 part 'auth_states.dart';
 
@@ -137,18 +138,33 @@ class AuthCubit extends Cubit<AuthState> {
       request.fields['PhoneNumber'] = phoneNumber;
       request.fields['userType'] = '0';
 
-      // Default profile image (1x1 pixel PNG)
-      String defaultImageBase64 =
-          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
-      request.fields['Image'] = defaultImageBase64;
+      if (_profileImage != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'Image',
+          _profileImage!.path,
+        ));
+      } else {
+        final defaultImage =
+            await rootBundle.load('images/add personal photo.png');
+        request.files.add(http.MultipartFile.fromBytes(
+          'Image',
+          defaultImage.buffer.asUint8List(),
+          filename: 'default_profile.png',
+        ));
+      }
 
       final response = await request.send();
       final respStr = await response.stream.bytesToString();
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(respStr);
-        final userId = data['userId'];
-        emit(AuthRegisterSuccessState(userId));
+        if (data['result'] != null && data['result']['succeeded'] == true) {
+          final userId = data['userId'];
+          emit(AuthRegisterSuccessState(userId));
+        } else {
+          final errors = data['result']?['errors'] ?? ['Registration failed'];
+          emit(AuthErrorState(errors.first));
+        }
       } else {
         final errorData = json.decode(respStr);
         final errorMessage = errorData['message'] ?? 'Registration failed';
@@ -186,6 +202,49 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthErrorState(
         'An error occurred. Please check your internet connection.',
       ));
+    }
+  }
+
+  Future<void> registerPatient({
+    required String nationalId,
+    required String nationalIdImageUrl,
+    required String birthDate,
+    required int gender,
+    required String governorate,
+    required String city,
+    required String applicationUserId,
+  }) async {
+    emit(AuthLoadingState());
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/Patient'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'nationalId': nationalId,
+          'nationalIdImageUrl': nationalIdImageUrl,
+          'birthDate': birthDate,
+          'gender': gender,
+          'governorate': governorate,
+          'city': city,
+          'isVerified': false,
+          'applicationUserId': applicationUserId,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        emit(AuthPatientRegisterSuccessState());
+      } else {
+        final errorData = json.decode(response.body);
+        final errorMessage =
+            errorData['message'] ?? 'Patient registration failed';
+        emit(AuthErrorState(errorMessage));
+      }
+    } catch (e) {
+      debugPrint('Patient registration error: $e');
+      emit(AuthErrorState('Patient registration failed. Please try again.'));
     }
   }
 }
