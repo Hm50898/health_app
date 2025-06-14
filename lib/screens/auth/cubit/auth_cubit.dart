@@ -108,8 +108,18 @@ class AuthCubit extends Cubit<AuthState> {
         await _saveToken(responseBody['jwtToken']);
         emit(AuthLoginSuccessState(_token!));
       } else {
-        final error = jsonDecode(response.body)['message'] ?? 'Login failed';
-        emit(AuthErrorState(error));
+        final responseBody = jsonDecode(response.body);
+        String errorMessage = 'Login failed';
+
+        if (responseBody['errors'] != null &&
+            responseBody['errors'].isNotEmpty) {
+          final error = responseBody['errors'][0];
+          errorMessage = error['description'] ?? errorMessage;
+        } else {
+          errorMessage = responseBody['message'] ?? errorMessage;
+        }
+
+        emit(AuthErrorState(errorMessage));
       }
     } catch (e) {
       emit(AuthErrorState('Login error: ${e.toString()}'));

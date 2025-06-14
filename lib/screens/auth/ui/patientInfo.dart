@@ -54,8 +54,7 @@ class _RemainState extends State<PatientInfo> {
     'New Valley',
     'Sharqiyah',
     'Suez',
-    'Beni Suef',
-    'Damietta',
+    'Beni Suef'
   ];
 
   Future<void> _selectDate(BuildContext context) async {

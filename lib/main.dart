@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         home: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
             if (state is AuthLoadingState) {
-              return const SplashScreen();
+              return LoginPage();
             } else if (state is AuthLoginSuccessState) {
               return HomePage();
             } else {
@@ -45,17 +45,6 @@ class MyApp extends StatelessWidget {
           '/home': (context) => HomePage(),
         },
       ),
-    );
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
     );
   }
 }
