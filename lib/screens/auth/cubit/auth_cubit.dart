@@ -231,6 +231,7 @@ class AuthCubit extends Cubit<AuthState> {
           'city': city,
           'isVerified': false,
           'applicationUserId': applicationUserId,
+          'HumanPatient': true,
         }),
       );
 
@@ -245,6 +246,55 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       debugPrint('Patient registration error: $e');
       emit(AuthErrorState('Patient registration failed. Please try again.'));
+    }
+  }
+
+  Future<void> sendVerificationCode(String email) async {
+    emit(AuthLoadingState());
+
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/send-verification-code?emailAddress=$email'),
+      );
+
+      if (response.statusCode == 200) {
+        emit(AuthSendVerificationCodeSuccessState(email));
+      } else {
+        final errorData = json.decode(response.body);
+        final errorMessage =
+            errorData['message'] ?? 'Failed to send verification code';
+        emit(AuthErrorState(errorMessage));
+      }
+    } catch (e) {
+      debugPrint('Send verification code error: $e');
+      emit(AuthErrorState(
+          'Failed to send verification code. Please try again.'));
+    }
+  }
+
+  Future<void> verifyCode(String email, String code) async {
+    emit(AuthLoadingState());
+
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/verify-code'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'code': code,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        emit(AuthVerifyCodeSuccessState());
+      } else {
+        final errorData = json.decode(response.body);
+        final errorMessage = errorData['message'] ?? 'Verification failed';
+        emit(AuthErrorState(errorMessage));
+      }
+    } catch (e) {
+      debugPrint('Verify code error: $e');
+      emit(AuthErrorState('Verification failed. Please try again.'));
     }
   }
 }

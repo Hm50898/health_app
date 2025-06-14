@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
-
-import '../../Ver.dart';
+import 'package:flutter_project/screens/auth/ui/Ver.dart' show Ver;
 
 class ForgetPassword extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();

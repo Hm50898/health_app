@@ -20,6 +20,13 @@ class AuthRegisterSuccessState extends AuthState {
 
 class AuthPatientRegisterSuccessState extends AuthState {}
 
+class AuthSendVerificationCodeSuccessState extends AuthState {
+  final String email;
+  AuthSendVerificationCodeSuccessState(this.email);
+}
+
+class AuthVerifyCodeSuccessState extends AuthState {}
+
 class AuthForgetPasswordSuccessState extends AuthState {
   final String email;
   AuthForgetPasswordSuccessState(this.email);

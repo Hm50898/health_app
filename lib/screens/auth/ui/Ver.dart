@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/screens/auth/ui/login.dart';
+import 'package:flutter_project/screens/successfully.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
-  runApp(Verify());
+  runApp(MaterialApp(home: Ver(email: 'example@example.com')));
 }
 
-class Verify extends StatefulWidget {
+class Ver extends StatefulWidget {
+  final String email;
+
+  Ver({required this.email});
+
   @override
-  _VerifyEmailPageState createState() => _VerifyEmailPageState();
+  _VerState createState() => _VerState();
 }
 
-class _VerifyEmailPageState extends State<Verify> {
-  final TextEditingController emailController = TextEditingController();
+class _VerState extends State<Ver> {
   final TextEditingController codeController1 = TextEditingController();
   final TextEditingController codeController2 = TextEditingController();
   final TextEditingController codeController3 = TextEditingController();
@@ -20,16 +25,70 @@ class _VerifyEmailPageState extends State<Verify> {
   bool isLoading = false;
 
   @override
+  void dispose() {
+    codeController1.dispose();
+    codeController2.dispose();
+    codeController3.dispose();
+    codeController4.dispose();
+    super.dispose();
+  }
+
+  Future<void> verifyCode() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    String code = codeController1.text +
+        codeController2.text +
+        codeController3.text +
+        codeController4.text;
+
+    Map<String, String> body = {
+      'email': widget.email,
+      'code': code,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://healthmate.runasp.net/api/Account/verify-code'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Successfully(email: widget.email)),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Verification failed. Please try again.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               Positioned(
-                top: 47,
+                top: 50,
                 left: 20,
                 child: GestureDetector(
                   onTap: () {
@@ -55,7 +114,7 @@ class _VerifyEmailPageState extends State<Verify> {
                 ),
               ),
               const Positioned(
-                top: 76,
+                top: 45,
                 left: 93,
                 child: Opacity(
                   opacity: 1.0,
@@ -102,10 +161,10 @@ class _VerifyEmailPageState extends State<Verify> {
                   width: 300,
                   height: 60,
                   alignment: Alignment.center,
-                  child: const Text(
-                    'Please Enter the Email and the Code Sent to your Email.',
+                  child: Text(
+                    'Verification code sent to: ${widget.email}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -158,7 +217,7 @@ class _VerifyEmailPageState extends State<Verify> {
                   ),
                   child: const Text(
                     'Resend Code',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Color(0x4D000000),
                       fontFamily: 'Poppins',
                       fontSize: 15,
@@ -171,12 +230,7 @@ class _VerifyEmailPageState extends State<Verify> {
                 top: 690,
                 left: 24,
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
+                  onTap: isLoading ? null : verifyCode,
                   child: Container(
                     width: 345,
                     height: 49,
@@ -190,7 +244,7 @@ class _VerifyEmailPageState extends State<Verify> {
                       child: isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(
-                              'Done',
+                              'Verify',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20,
