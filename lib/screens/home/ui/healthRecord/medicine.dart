@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 
 class MedicinePage extends StatelessWidget {
-  final List<Medicine> medicines;
+  final List<Medicine> medicinesSummary;
 
-  const MedicinePage({super.key, required this.medicines});
+  const MedicinePage({super.key, required this.medicinesSummary});
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +57,9 @@ class MedicinePage extends StatelessWidget {
       body: SafeArea(
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: medicines.length,
+          itemCount: medicinesSummary.length,
           itemBuilder: (context, index) {
-            final medicine = medicines[index];
+            final medicine = medicinesSummary[index];
             return Card(
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(
@@ -80,13 +80,13 @@ class MedicinePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text('Dosage: ${medicine.dosage}'),
-                    Text('Frequency: ${medicine.frequency}'),
+                    Text('Dosage: ${medicine.dosePerTime}'),
+                    Text('Frequency: Every ${medicine.frequencyInHours} hours'),
+                    Text('Duration: ${medicine.durationInDays} days'),
                     Text(
-                        'Start Date: ${medicine.startDate.toString().split(' ')[0]}'),
-                    if (medicine.endDate != null)
-                      Text(
-                          'End Date: ${medicine.endDate.toString().split(' ')[0]}'),
+                        'Start Date: ${medicine.date.toString().split(' ')[0]}'),
+                    Text(
+                        'Status: ${medicine.isOngoing ? "Ongoing" : "Completed"}'),
                   ],
                 ),
               ),

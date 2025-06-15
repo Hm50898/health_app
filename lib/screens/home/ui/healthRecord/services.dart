@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import 'package:flutter_project/screens/home/cubit/home_states.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/disease_list.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/lab_list.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/imaging.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/prescription.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/encounter_list.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/medicine.dart';
-import 'package:flutter_project/screens/home/ui/healthRecord/disease.dart';
-import 'package:flutter_project/screens/home/ui/healthRecord/mlab.dart';
-import 'package:flutter_project/screens/home/ui/healthRecord/imagdetal.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/ibm.dart';
 
 class Services extends StatelessWidget {
   const Services({super.key});
@@ -92,108 +94,128 @@ class Services extends StatelessWidget {
 
               if (state is HealthRecordSummaryLoaded) {
                 final healthRecord = HealthRecordModel.fromJson(state.data);
-                return SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
                     children: [
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        children: [
-                          _buildServiceCard(
-                            'Medicine',
-                            'images/Primary(2).png',
-                            healthRecord.medicines.length,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MedicinePage(
-                                      medicines: healthRecord.medicines),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildServiceCard(
-                            'BMI',
-                            'images/Primary (3).png',
-                            healthRecord.bmiData != null ? 1 : 0,
-                            () {
-                              if (healthRecord.bmiData != null) {
-                                _showBMIDetails(context, healthRecord.bmiData!);
-                              }
-                            },
-                          ),
-                          _buildServiceCard(
-                            'Disease',
-                            'images/Primary (4).png',
-                            healthRecord.diseases.length,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DiseasePage(
-                                      diseases: healthRecord.diseases),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildServiceCard(
-                            'Lab',
-                            'images/lab.png',
-                            healthRecord.labTests.length,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      LabPage(labTests: healthRecord.labTests),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildServiceCard(
-                            'Imaging',
-                            'images/Imaging.png',
-                            healthRecord.imaging.length,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ImagingPage(
-                                      imaging: healthRecord.imaging),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildServiceCard(
-                            'Prescription',
-                            'images/Prescription.png',
-                            healthRecord.prescriptions.length,
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PrescriptionPage(
-                                      prescriptions:
-                                          healthRecord.prescriptions),
-                                ),
-                              );
-                            },
-                          ),
-                        ],
+                      _buildServiceCard(
+                        'Diseases',
+                        Icons.medical_services,
+                        healthRecord.conditionsSummary.length,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DiseaseListScreen(
+                                conditionsSummary:
+                                    healthRecord.conditionsSummary,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildServiceCard(
+                        'Lab Tests',
+                        Icons.science,
+                        healthRecord.labTestsSummary.length,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LabListScreen(
+                                labTestsSummary: healthRecord.labTestsSummary,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildServiceCard(
+                        'Medical Images',
+                        Icons.image,
+                        healthRecord.medicalImagesSummary.length,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImagingPage(
+                                imaging: healthRecord.medicalImagesSummary,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildServiceCard(
+                        'Prescriptions',
+                        Icons.description,
+                        healthRecord.prescriptionsSummary.length,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PrescriptionPage(
+                                prescriptionsSummary:
+                                    healthRecord.prescriptionsSummary,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildServiceCard(
+                        'Medicines',
+                        Icons.medication,
+                        healthRecord.medicinesSummary.length,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MedicinePage(
+                                medicinesSummary: healthRecord.medicinesSummary,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildServiceCard(
+                        'Encounters',
+                        Icons.event_note,
+                        healthRecord.encountersSummary.expand((x) => x).length,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EncounterListScreen(
+                                encountersSummary:
+                                    healthRecord.encountersSummary,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildServiceCard(
+                        'IBM',
+                        Icons.analytics,
+                        healthRecord.encountersSummary.expand((x) => x).length,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => IBMPage(
+                                encountersSummary:
+                                    healthRecord.encountersSummary,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
                 );
               }
 
-              return const SizedBox.shrink();
+              return const Center(child: Text('No data available'));
             },
           ),
         ),
@@ -202,7 +224,7 @@ class Services extends StatelessWidget {
   }
 
   Widget _buildServiceCard(
-      String title, String imagePath, int count, VoidCallback onTap) {
+      String title, IconData icon, int count, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -214,7 +236,7 @@ class Services extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(imagePath, width: 48, height: 48),
+            Icon(icon, size: 48, color: const Color(0xFF036666)),
             const SizedBox(height: 8),
             Text(
               title,
@@ -234,33 +256,6 @@ class Services extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showBMIDetails(BuildContext context, BMIData bmiData) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('BMI Details'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Height: ${bmiData.height} cm'),
-            Text('Weight: ${bmiData.weight} kg'),
-            Text('BMI: ${bmiData.bmi.toStringAsFixed(1)}'),
-            Text('Category: ${bmiData.category}'),
-            Text(
-                'Last Updated: ${bmiData.measurementDate.toString().split(' ')[0]}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
       ),
     );
   }

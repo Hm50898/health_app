@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 
-class LabPage extends StatelessWidget {
-  final List<LabTest> labTestsSummary;
+class IBMPage extends StatelessWidget {
+  final List<List<Encounter>> encountersSummary;
 
-  const LabPage({super.key, required this.labTestsSummary});
+  const IBMPage({super.key, required this.encountersSummary});
 
   @override
   Widget build(BuildContext context) {
+    final allEncounters = encountersSummary.expand((x) => x).toList();
+
+    // Group encounters by condition
+    final Map<String, List<Encounter>> groupedEncounters = {};
+    for (var encounter in allEncounters) {
+      if (!groupedEncounters.containsKey(encounter.conditionName)) {
+        groupedEncounters[encounter.conditionName] = [];
+      }
+      groupedEncounters[encounter.conditionName]!.add(encounter);
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -43,7 +54,7 @@ class LabPage extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               const Text(
-                "Lab Tests",
+                "IBM Analysis",
                 style: TextStyle(
                   color: Color(0xFF036666),
                   fontSize: 24,
@@ -57,9 +68,11 @@ class LabPage extends StatelessWidget {
       body: SafeArea(
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: labTestsSummary.length,
+          itemCount: groupedEncounters.length,
           itemBuilder: (context, index) {
-            final labTest = labTestsSummary[index];
+            final conditionName = groupedEncounters.keys.elementAt(index);
+            final encounters = groupedEncounters[conditionName]!;
+
             return Card(
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(
@@ -72,18 +85,49 @@ class LabPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      labTest.testName,
+                      conditionName,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF036666),
                       ),
                     ),
+                    const SizedBox(height: 16),
+                    ...encounters
+                        .map((encounter) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Encounter #${encounter.encounterId}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    encounter.encounterDate
+                                        .toString()
+                                        .split(' ')[0],
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
                     const SizedBox(height: 8),
-                    Text('Result: ${labTest.result}'),
                     Text(
-                        'Test Date: ${labTest.testDate.toString().split(' ')[0]}'),
-                    Text('Note: ${labTest.note}'),
+                      'Total Encounters: ${encounters.length}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),

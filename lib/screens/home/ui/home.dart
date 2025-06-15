@@ -158,7 +158,7 @@ class HomePage extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      MedicinePage(medicines: [])),
+                                      MedicinePage(medicinesSummary: [])),
                             );
                           },
                           topPadding: 10,

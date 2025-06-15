@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
+import 'package:flutter_project/screens/home/ui/details/disease_details.dart';
 
-class LabPage extends StatelessWidget {
-  final List<LabTest> labTestsSummary;
+class DiseaseListScreen extends StatelessWidget {
+  final List<Disease> conditionsSummary;
 
-  const LabPage({super.key, required this.labTestsSummary});
+  const DiseaseListScreen({super.key, required this.conditionsSummary});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class LabPage extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               const Text(
-                "Lab Tests",
+                "Diseases",
                 style: TextStyle(
                   color: Color(0xFF036666),
                   fontSize: 24,
@@ -57,34 +58,44 @@ class LabPage extends StatelessWidget {
       body: SafeArea(
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: labTestsSummary.length,
+          itemCount: conditionsSummary.length,
           itemBuilder: (context, index) {
-            final labTest = labTestsSummary[index];
-            return Card(
-              margin: const EdgeInsets.only(bottom: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFF036666)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      labTest.testName,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF036666),
+            final disease = conditionsSummary[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DiseaseDetailsScreen(disease: disease),
+                  ),
+                );
+              },
+              child: Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: Color(0xFF036666)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        disease.conditionName,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF036666),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text('Result: ${labTest.result}'),
-                    Text(
-                        'Test Date: ${labTest.testDate.toString().split(' ')[0]}'),
-                    Text('Note: ${labTest.note}'),
-                  ],
+                      const SizedBox(height: 8),
+                      Text('Severity: ${disease.severity}'),
+                      Text('Date: ${disease.date.toString().split(' ')[0]}'),
+                      Text('Note: ${disease.note}'),
+                    ],
+                  ),
                 ),
               ),
             );

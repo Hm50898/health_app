@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
+import 'package:flutter_project/screens/home/ui/details/lab_test_details.dart';
 
-class LabPage extends StatelessWidget {
+class LabListScreen extends StatelessWidget {
   final List<LabTest> labTestsSummary;
 
-  const LabPage({super.key, required this.labTestsSummary});
+  const LabListScreen({super.key, required this.labTestsSummary});
 
   @override
   Widget build(BuildContext context) {
@@ -60,31 +61,42 @@ class LabPage extends StatelessWidget {
           itemCount: labTestsSummary.length,
           itemBuilder: (context, index) {
             final labTest = labTestsSummary[index];
-            return Card(
-              margin: const EdgeInsets.only(bottom: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFF036666)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      labTest.testName,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF036666),
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        LabTestDetailsScreen(labTest: labTest),
+                  ),
+                );
+              },
+              child: Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: Color(0xFF036666)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        labTest.testName,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF036666),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text('Result: ${labTest.result}'),
-                    Text(
-                        'Test Date: ${labTest.testDate.toString().split(' ')[0]}'),
-                    Text('Note: ${labTest.note}'),
-                  ],
+                      const SizedBox(height: 8),
+                      Text('Result: ${labTest.result}'),
+                      Text(
+                          'Test Date: ${labTest.testDate.toString().split(' ')[0]}'),
+                      Text('Note: ${labTest.note}'),
+                    ],
+                  ),
                 ),
               ),
             );

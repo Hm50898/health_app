@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 
 class DiseasePage extends StatelessWidget {
-  final List<Disease> diseases;
+  final List<Disease> conditionsSummary;
 
-  const DiseasePage({super.key, required this.diseases});
+  const DiseasePage({super.key, required this.conditionsSummary});
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +57,9 @@ class DiseasePage extends StatelessWidget {
       body: SafeArea(
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: diseases.length,
+          itemCount: conditionsSummary.length,
           itemBuilder: (context, index) {
-            final disease = diseases[index];
+            final disease = conditionsSummary[index];
             return Card(
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(
@@ -72,7 +72,7 @@ class DiseasePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      disease.name,
+                      disease.conditionName,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -80,10 +80,9 @@ class DiseasePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text('Diagnosis: ${disease.diagnosis}'),
-                    Text(
-                        'Diagnosis Date: ${disease.diagnosisDate.toString().split(' ')[0]}'),
-                    Text('Status: ${disease.status}'),
+                    Text('Severity: ${disease.severity}'),
+                    Text('Date: ${disease.date.toString().split(' ')[0]}'),
+                    Text('Note: ${disease.note}'),
                   ],
                 ),
               ),

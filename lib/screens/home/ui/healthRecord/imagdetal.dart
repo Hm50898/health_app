@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 
 class ImagingPage extends StatelessWidget {
-  final List<Imaging> imaging;
+  final List<Imaging> medicalImagesSummary;
 
-  const ImagingPage({super.key, required this.imaging});
+  const ImagingPage({super.key, required this.medicalImagesSummary});
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +57,9 @@ class ImagingPage extends StatelessWidget {
       body: SafeArea(
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: imaging.length,
+          itemCount: medicalImagesSummary.length,
           itemBuilder: (context, index) {
-            final image = imaging[index];
+            final image = medicalImagesSummary[index];
             return Card(
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(
@@ -72,7 +72,7 @@ class ImagingPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      image.type,
+                      image.medicalImageName,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -80,10 +80,8 @@ class ImagingPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text('Result: ${image.result}'),
                     Text(
-                        'Scan Date: ${image.scanDate.toString().split(' ')[0]}'),
-                    Text('Status: ${image.status}'),
+                        'Date: ${image.medicalImageDate.toString().split(' ')[0]}'),
                   ],
                 ),
               ),

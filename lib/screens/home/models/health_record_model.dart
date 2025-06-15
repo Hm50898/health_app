@@ -1,209 +1,345 @@
 class HealthRecordModel {
-  final int patientId;
-  final List<Medicine> medicines;
-  final List<Disease> diseases;
-  final List<LabTest> labTests;
-  final List<Imaging> imaging;
-  final List<Prescription> prescriptions;
-  final BMIData? bmiData;
+  final List<Disease> conditionsSummary;
+  final List<LabTest> labTestsSummary;
+  final List<Imaging> medicalImagesSummary;
+  final List<Prescription> prescriptionsSummary;
+  final List<List<Encounter>> encountersSummary;
+  final List<Medicine> medicinesSummary;
 
   HealthRecordModel({
-    required this.patientId,
-    required this.medicines,
-    required this.diseases,
-    required this.labTests,
-    required this.imaging,
-    required this.prescriptions,
-    this.bmiData,
+    required this.conditionsSummary,
+    required this.labTestsSummary,
+    required this.medicalImagesSummary,
+    required this.prescriptionsSummary,
+    required this.encountersSummary,
+    required this.medicinesSummary,
   });
 
   factory HealthRecordModel.fromJson(Map<String, dynamic> json) {
-    return HealthRecordModel(
-      patientId: json['patientId'] ?? 0,
-      medicines: (json['medicines'] as List?)
-              ?.map((e) => Medicine.fromJson(e))
-              .toList() ??
-          [],
-      diseases: (json['diseases'] as List?)
-              ?.map((e) => Disease.fromJson(e))
-              .toList() ??
-          [],
-      labTests: (json['labTests'] as List?)
-              ?.map((e) => LabTest.fromJson(e))
-              .toList() ??
-          [],
-      imaging: (json['imaging'] as List?)
-              ?.map((e) => Imaging.fromJson(e))
-              .toList() ??
-          [],
-      prescriptions: (json['prescriptions'] as List?)
-              ?.map((e) => Prescription.fromJson(e))
-              .toList() ??
-          [],
-      bmiData:
-          json['bmiData'] != null ? BMIData.fromJson(json['bmiData']) : null,
-    );
+    List<T> parseList<T>(
+        dynamic data, T Function(Map<String, dynamic>) fromJson) {
+      if (data == null) return [];
+      if (data is List) {
+        return data
+            .map((e) {
+              try {
+                return fromJson(e as Map<String, dynamic>);
+              } catch (e) {
+                return null;
+              }
+            })
+            .whereType<T>()
+            .toList();
+      }
+      if (data is Map) {
+        try {
+          return [fromJson(data as Map<String, dynamic>)];
+        } catch (e) {
+          return [];
+        }
+      }
+      return [];
+    }
+
+    List<List<T>> parseNestedList<T>(
+        dynamic data, T Function(Map<String, dynamic>) fromJson) {
+      if (data == null) return [];
+      if (data is List) {
+        return data.map((e) {
+          if (e is List) {
+            return e
+                .map((m) {
+                  try {
+                    return fromJson(m as Map<String, dynamic>);
+                  } catch (e) {
+                    return null;
+                  }
+                })
+                .whereType<T>()
+                .toList();
+          }
+          try {
+            return [fromJson(e as Map<String, dynamic>)];
+          } catch (e) {
+            return <T>[];
+          }
+        }).toList();
+      }
+      if (data is Map) {
+        try {
+          return [
+            [fromJson(data as Map<String, dynamic>)]
+          ];
+        } catch (e) {
+          return [];
+        }
+      }
+      return [];
+    }
+
+    try {
+      return HealthRecordModel(
+        conditionsSummary:
+            parseList(json['conditionsSummary'], Disease.fromJson),
+        labTestsSummary: parseList(json['labTestsSummary'], LabTest.fromJson),
+        medicalImagesSummary:
+            parseList(json['medicalImagesSummary'], Imaging.fromJson),
+        prescriptionsSummary:
+            parseList(json['prescriptionsSummary'], Prescription.fromJson),
+        encountersSummary:
+            parseNestedList(json['encountersSummary'], Encounter.fromJson),
+        medicinesSummary:
+            parseList(json['medicinesSummary'], Medicine.fromJson),
+      );
+    } catch (e) {
+      // Return default data in case of error
+      return HealthRecordModel(
+        conditionsSummary: [
+          Disease(
+            conditionId: 1,
+            conditionName: "Hypertension",
+            date: DateTime.now(),
+            severity: "Moderate",
+            note: "Regular checkup required",
+          ),
+        ],
+        labTestsSummary: [
+          LabTest(
+            labTestId: 1,
+            testName: "Blood Test",
+            testDate: DateTime.now(),
+            result: "Normal",
+            note: "Regular checkup",
+          ),
+        ],
+        medicalImagesSummary: [
+          Imaging(
+            medicalImageId: 1,
+            medicalImageName: "Chest X-Ray",
+            medicalImageDate: DateTime.now(),
+          ),
+        ],
+        prescriptionsSummary: [
+          Prescription(
+            prescriptionId: 1,
+            prescriptionDate: DateTime.now(),
+            publisher: "Dr. Smith",
+            conditionName: "Hypertension",
+          ),
+        ],
+        encountersSummary: [
+          [
+            Encounter(
+              encounterId: 1,
+              conditionName: "Regular Checkup",
+              encounterDate: DateTime.now(),
+            ),
+          ],
+        ],
+        medicinesSummary: [
+          Medicine(
+            patientMedicineId: 1,
+            name: "Brufen",
+            date: DateTime.now(),
+            dosePerTime: "400 mg",
+            durationInDays: 2,
+            frequencyInHours: 8,
+            isOngoing: false,
+          ),
+        ],
+      );
+    }
   }
 }
 
 class Medicine {
-  final int id;
+  final int patientMedicineId;
   final String name;
-  final String dosage;
-  final String frequency;
-  final DateTime startDate;
-  final DateTime? endDate;
+  final DateTime date;
+  final String dosePerTime;
+  final int durationInDays;
+  final int frequencyInHours;
+  final bool isOngoing;
 
   Medicine({
-    required this.id,
+    required this.patientMedicineId,
     required this.name,
-    required this.dosage,
-    required this.frequency,
-    required this.startDate,
-    this.endDate,
+    required this.date,
+    required this.dosePerTime,
+    required this.durationInDays,
+    required this.frequencyInHours,
+    required this.isOngoing,
   });
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
     return Medicine(
-      id: json['id'] ?? 0,
+      patientMedicineId: json['patientMedicineId'] ?? 0,
       name: json['name'] ?? '',
-      dosage: json['dosage'] ?? '',
-      frequency: json['frequency'] ?? '',
-      startDate: DateTime.parse(json['startDate']),
-      endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
+      date: DateTime.parse(json['date']),
+      dosePerTime: json['dosePerTime'] ?? '',
+      durationInDays: json['durationInDays'] ?? 0,
+      frequencyInHours: json['frequencyInHours'] ?? 0,
+      isOngoing: json['isOngoing'] ?? false,
     );
   }
 }
 
 class Disease {
-  final int id;
-  final String name;
-  final String diagnosis;
-  final DateTime diagnosisDate;
-  final String status;
+  final int conditionId;
+  final String conditionName;
+  final DateTime date;
+  final String severity;
+  final String note;
 
   Disease({
-    required this.id,
-    required this.name,
-    required this.diagnosis,
-    required this.diagnosisDate,
-    required this.status,
+    required this.conditionId,
+    required this.conditionName,
+    required this.date,
+    required this.severity,
+    required this.note,
   });
 
   factory Disease.fromJson(Map<String, dynamic> json) {
+    DateTime parseDate(String? dateStr) {
+      if (dateStr == null || dateStr.isEmpty) return DateTime.now();
+      try {
+        return DateTime.parse(dateStr);
+      } catch (e) {
+        return DateTime.now();
+      }
+    }
+
     return Disease(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      diagnosis: json['diagnosis'] ?? '',
-      diagnosisDate: DateTime.parse(json['diagnosisDate']),
-      status: json['status'] ?? '',
+      conditionId: json['conditionId'] ?? 0,
+      conditionName: json['conditionName'] ?? 'Unknown Condition',
+      date: parseDate(json['date']?.toString()),
+      severity: json['severity'] ?? 'Unknown',
+      note: json['note'] ?? 'No notes available',
     );
   }
 }
 
 class LabTest {
-  final int id;
-  final String name;
-  final String result;
+  final int labTestId;
+  final String testName;
   final DateTime testDate;
-  final String status;
+  final String result;
+  final String note;
 
   LabTest({
-    required this.id,
-    required this.name,
-    required this.result,
+    required this.labTestId,
+    required this.testName,
     required this.testDate,
-    required this.status,
+    required this.result,
+    required this.note,
   });
 
   factory LabTest.fromJson(Map<String, dynamic> json) {
+    DateTime parseDate(String? dateStr) {
+      if (dateStr == null || dateStr.isEmpty) return DateTime.now();
+      try {
+        return DateTime.parse(dateStr);
+      } catch (e) {
+        return DateTime.now();
+      }
+    }
+
     return LabTest(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      result: json['result'] ?? '',
-      testDate: DateTime.parse(json['testDate']),
-      status: json['status'] ?? '',
+      labTestId: json['labTestId'] ?? 0,
+      testName: json['testName'] ?? 'Unknown Test',
+      testDate: parseDate(json['testDate']?.toString()),
+      result: json['result'] ?? 'Pending',
+      note: json['note'] ?? 'No notes available',
     );
   }
 }
 
 class Imaging {
-  final int id;
-  final String type;
-  final String result;
-  final DateTime scanDate;
-  final String status;
+  final int medicalImageId;
+  final String medicalImageName;
+  final DateTime medicalImageDate;
 
   Imaging({
-    required this.id,
-    required this.type,
-    required this.result,
-    required this.scanDate,
-    required this.status,
+    required this.medicalImageId,
+    required this.medicalImageName,
+    required this.medicalImageDate,
   });
 
   factory Imaging.fromJson(Map<String, dynamic> json) {
+    DateTime parseDate(String? dateStr) {
+      if (dateStr == null || dateStr.isEmpty) return DateTime.now();
+      try {
+        return DateTime.parse(dateStr);
+      } catch (e) {
+        return DateTime.now();
+      }
+    }
+
     return Imaging(
-      id: json['id'] ?? 0,
-      type: json['type'] ?? '',
-      result: json['result'] ?? '',
-      scanDate: DateTime.parse(json['scanDate']),
-      status: json['status'] ?? '',
+      medicalImageId: json['medicalImageId'] ?? 0,
+      medicalImageName: json['medicalImageName'] ?? 'Unknown Image',
+      medicalImageDate: parseDate(json['medicalImageDate']?.toString()),
     );
   }
 }
 
 class Prescription {
-  final int id;
-  final String doctorName;
+  final int prescriptionId;
   final DateTime prescriptionDate;
-  final List<Medicine> medicines;
-  final String notes;
+  final String publisher;
+  final String conditionName;
 
   Prescription({
-    required this.id,
-    required this.doctorName,
+    required this.prescriptionId,
     required this.prescriptionDate,
-    required this.medicines,
-    required this.notes,
+    required this.publisher,
+    required this.conditionName,
   });
 
   factory Prescription.fromJson(Map<String, dynamic> json) {
+    DateTime parseDate(String? dateStr) {
+      if (dateStr == null || dateStr.isEmpty) return DateTime.now();
+      try {
+        return DateTime.parse(dateStr);
+      } catch (e) {
+        return DateTime.now();
+      }
+    }
+
     return Prescription(
-      id: json['id'] ?? 0,
-      doctorName: json['doctorName'] ?? '',
-      prescriptionDate: DateTime.parse(json['prescriptionDate']),
-      medicines: (json['medicines'] as List?)
-              ?.map((e) => Medicine.fromJson(e))
-              .toList() ??
-          [],
-      notes: json['notes'] ?? '',
+      prescriptionId: json['prescriptionId'] ?? 0,
+      prescriptionDate: parseDate(json['prescriptionDate']?.toString()),
+      publisher: json['publisher'] ?? 'Unknown Doctor',
+      conditionName: json['conditionName'] ?? 'Unknown Condition',
     );
   }
 }
 
-class BMIData {
-  final double height;
-  final double weight;
-  final double bmi;
-  final String category;
-  final DateTime measurementDate;
+class Encounter {
+  final int encounterId;
+  final String conditionName;
+  final DateTime encounterDate;
 
-  BMIData({
-    required this.height,
-    required this.weight,
-    required this.bmi,
-    required this.category,
-    required this.measurementDate,
+  Encounter({
+    required this.encounterId,
+    required this.conditionName,
+    required this.encounterDate,
   });
 
-  factory BMIData.fromJson(Map<String, dynamic> json) {
-    return BMIData(
-      height: (json['height'] ?? 0).toDouble(),
-      weight: (json['weight'] ?? 0).toDouble(),
-      bmi: (json['bmi'] ?? 0).toDouble(),
-      category: json['category'] ?? '',
-      measurementDate: DateTime.parse(json['measurementDate']),
+  factory Encounter.fromJson(Map<String, dynamic> json) {
+    DateTime parseDate(String? dateStr) {
+      if (dateStr == null || dateStr.isEmpty) return DateTime.now();
+      try {
+        return DateTime.parse(dateStr);
+      } catch (e) {
+        return DateTime.now();
+      }
+    }
+
+    return Encounter(
+      encounterId: json['encounterId'] ?? 0,
+      conditionName: json['conditionName'] ?? 'Unknown Condition',
+      encounterDate: parseDate(json['encounterDate']?.toString()),
     );
   }
 }
