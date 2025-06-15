@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'auth/ui/register.dart';
 import 'auth/ui/login.dart';
 
-void main() {
-  runApp(MaterialApp(home: Choose()));
-}
-
-class Choose extends StatefulWidget {
+class ChoosePage extends StatefulWidget {
   @override
   _ChooseState createState() => _ChooseState();
 }
 
-class _ChooseState extends State<Choose> {
+class _ChooseState extends State<ChoosePage> {
   String selectedButton = '';
 
   @override

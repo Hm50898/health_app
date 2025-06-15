@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-void main() {
-  runApp(const Profile());
-}
-
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilePageState extends State<ProfilePage> {
   File? _image;
   String? _selectedBloodType;
 
@@ -64,8 +60,6 @@ class _ProfileState extends State<Profile> {
       },
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,23 +129,21 @@ class _ProfileState extends State<Profile> {
                       clipBehavior: Clip.hardEdge,
                       child: _image != null
                           ? Image.file(
-                        _image!,
-                        fit: BoxFit.cover,
-                      )
+                              _image!,
+                              fit: BoxFit.cover,
+                            )
                           : Image.asset(
-                        '',
-                        fit: BoxFit.cover,
-                      ),
+                              '',
+                              fit: BoxFit.cover,
+                            ),
                     ),
                     const SizedBox(width: 20),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 25.0),
                       child: GestureDetector(
                         onTap: () => _showPickerOptions(context),
                         child: Row(
                           children: [
-
                             Image.asset(
                               'images/pro.png',
                               width: 32,
@@ -213,13 +205,16 @@ class _ProfileState extends State<Profile> {
 
                 const SizedBox(height: 30),
 
-                _buildTextField('Name', Icons.drive_file_rename_outline, 'Enter your Name'),
+                _buildTextField(
+                    'Name', Icons.drive_file_rename_outline, 'Enter your Name'),
                 const SizedBox(height: 20),
                 _buildTextField('Email', Icons.email, 'Enter your phone Email'),
                 const SizedBox(height: 20),
-                _buildTextField('Phone Number', Icons.phone, 'Enter your Phone Number'),
+                _buildTextField(
+                    'Phone Number', Icons.phone, 'Enter your Phone Number'),
                 const SizedBox(height: 20),
-                _buildTextField('Address', Icons.location_on, 'Enter your Address'),
+                _buildTextField(
+                    'Address', Icons.location_on, 'Enter your Address'),
 
                 const SizedBox(height: 30), // إضافة مسافة
 
@@ -233,7 +228,8 @@ class _ProfileState extends State<Profile> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 150, vertical: 15),
                     ),
                     child: const Text(
                       'Save',
@@ -245,7 +241,6 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -267,9 +262,7 @@ class _ProfileState extends State<Profile> {
         width: 60,
         height: 60,
         decoration: BoxDecoration(
-          color: isSelected
-              ? Color(0xFF036666).withOpacity(0.2)
-              : Colors.white,
+          color: isSelected ? Color(0xFF036666).withOpacity(0.2) : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: Colors.grey,
@@ -315,7 +308,8 @@ class _ProfileState extends State<Profile> {
               hintText: hintText,
               prefixIcon: Icon(icon),
               border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             ),
           ),
         ),

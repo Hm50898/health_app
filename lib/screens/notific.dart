@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: NotificationsPage(),
-  ));
+class NotificPage extends StatefulWidget {
+  @override
+  _NotificPageState createState() => _NotificPageState();
 }
 
-class NotificationsPage extends StatelessWidget {
+class _NotificPageState extends State<NotificPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +32,8 @@ class NotificationsPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.arrow_back, color: Color(0xFF036666), size: 20),
+                  child: const Icon(Icons.arrow_back,
+                      color: Color(0xFF036666), size: 20),
                 ),
               ),
               const SizedBox(width: 12),
@@ -69,7 +69,8 @@ class NotificationsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDateSection(String title, List<Widget> notifications, {bool showClearAll = false}) {
+  Widget _buildDateSection(String title, List<Widget> notifications,
+      {bool showClearAll = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -86,8 +87,7 @@ class NotificationsPage extends StatelessWidget {
             ),
             if (showClearAll)
               TextButton(
-                onPressed: () {
-                },
+                onPressed: () {},
                 child: Text(
                   "Clear all",
                   style: TextStyle(
@@ -220,7 +220,6 @@ class NotificationsPage extends StatelessWidget {
       ),
     );
   }
-
 
   IconData _getNotificationIcon(String title) {
     if (title.contains("Reminder")) return Icons.notifications_active;

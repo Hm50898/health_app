@@ -2,11 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-void main() {
-  runApp(AddFamilyMemberPage());
-}
-
-
 class AddFamilyMemberPage extends StatefulWidget {
   @override
   _AddFamilyMemberPageState createState() => _AddFamilyMemberPageState();
@@ -46,7 +41,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
               title: Text('Take a photo'),
               onTap: () async {
                 Navigator.of(context).pop();
-                final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                final pickedFile =
+                    await _picker.pickImage(source: ImageSource.camera);
                 if (pickedFile != null) {
                   setState(() {
                     _profileImageFile = File(pickedFile.path);
@@ -59,7 +55,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
               title: Text('Choose from gallery'),
               onTap: () async {
                 Navigator.of(context).pop();
-                final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                final pickedFile =
+                    await _picker.pickImage(source: ImageSource.gallery);
                 if (pickedFile != null) {
                   setState(() {
                     _profileImageFile = File(pickedFile.path);
@@ -126,7 +123,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                           ),
                         ],
                       ),
-                      child: const Icon(Icons.arrow_back, color: Color(0xFF036666), size: 20),
+                      child: const Icon(Icons.arrow_back,
+                          color: Color(0xFF036666), size: 20),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -175,7 +173,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                 ? FileImage(_profileImageFile!)
                                 : null,
                             child: _profileImageFile == null
-                                ? Icon(Icons.camera_alt, size: 40, color: Colors.grey[700])
+                                ? Icon(Icons.camera_alt,
+                                    size: 40, color: Colors.grey[700])
                                 : null,
                           ),
                         ),
@@ -190,7 +189,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                   Expanded(
                                     child: TextFormField(
                                       controller: _firstNameController,
-                                      decoration: customInputDecoration('First Name'),
+                                      decoration:
+                                          customInputDecoration('First Name'),
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter first name';
@@ -203,7 +203,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                   Expanded(
                                     child: TextFormField(
                                       controller: _lastNameController,
-                                      decoration: customInputDecoration('Last Name'),
+                                      decoration:
+                                          customInputDecoration('Last Name'),
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Please enter last name';
@@ -218,7 +219,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                               TextFormField(
                                 controller: _birthDateController,
                                 readOnly: true,
-                                decoration: customInputDecoration('Birth Date').copyWith(
+                                decoration: customInputDecoration('Birth Date')
+                                    .copyWith(
                                   suffixIcon: Icon(Icons.calendar_today),
                                 ),
                                 onTap: () async {
@@ -230,7 +232,7 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                   );
                                   if (pickedDate != null) {
                                     _birthDateController.text =
-                                    "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                                        "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
                                   }
                                 },
                                 validator: (value) {
@@ -244,7 +246,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                               TextFormField(
                                 controller: _nationalIdController,
                                 keyboardType: TextInputType.number,
-                                decoration: customInputDecoration('National ID'),
+                                decoration:
+                                    customInputDecoration('National ID'),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter national ID';
@@ -264,13 +267,16 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                 },
                               ),
                               SizedBox(height: 16),
-                              Text('Gender', style: TextStyle(fontSize: 16, color: Colors.grey[600])),
+                              Text('Gender',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.grey[600])),
                               SizedBox(height: 8),
                               Theme(
                                 data: Theme.of(context).copyWith(
                                   unselectedWidgetColor: radioBorderColor,
                                   radioTheme: RadioThemeData(
-                                    fillColor: MaterialStateProperty.resolveWith<Color>((states) {
+                                    fillColor: MaterialStateProperty
+                                        .resolveWith<Color>((states) {
                                       return radioBorderColor;
                                     }),
                                   ),
@@ -282,7 +288,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                         title: Text('Female'),
                                         value: 'female',
                                         groupValue: _gender,
-                                        onChanged: (value) => setState(() => _gender = value),
+                                        onChanged: (value) =>
+                                            setState(() => _gender = value),
                                       ),
                                     ),
                                     Expanded(
@@ -290,7 +297,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                         title: Text('Male'),
                                         value: 'male',
                                         groupValue: _gender,
-                                        onChanged: (value) => setState(() => _gender = value),
+                                        onChanged: (value) =>
+                                            setState(() => _gender = value),
                                       ),
                                     ),
                                   ],
@@ -300,13 +308,20 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                               Center(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    if (_formKey.currentState!.validate() && _gender != null) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Data saved successfully')),
+                                    if (_formKey.currentState!.validate() &&
+                                        _gender != null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                'Data saved successfully')),
                                       );
                                     } else if (_gender == null) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Please select gender')),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text('Please select gender')),
                                       );
                                     }
                                   },
@@ -315,7 +330,8 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
-                                    padding: const EdgeInsets.symmetric(horizontal: 150.0, vertical: 12.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 150.0, vertical: 12.0),
                                   ),
                                   child: Text('Save'),
                                 ),
@@ -343,7 +359,6 @@ class _AddFamilyMemberPageState extends State<AddFamilyMemberPage> {
             ),
           ),
         ),
-
         Positioned(
           top: 10,
           left: 325,

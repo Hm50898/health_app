@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/auth/ui/createNewPassword.dart';
 
-void main() {
-  runApp(Successfully(
-    email: '',
-  ));
-}
-
-class Successfully extends StatelessWidget {
+class SuccessfullyPage extends StatefulWidget {
   final String email;
 
-  Successfully({required this.email});
+  SuccessfullyPage({required this.email});
+
+  @override
+  _SuccessfullyPageState createState() => _SuccessfullyPageState();
+}
+
+class _SuccessfullyPageState extends State<SuccessfullyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +98,7 @@ class Successfully extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CreateNewPassword(
-                            email: email,
+                            email: widget.email,
                           )),
                 );
               },

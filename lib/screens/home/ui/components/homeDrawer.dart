@@ -38,7 +38,7 @@ class Homedrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => privacy()),
+                MaterialPageRoute(builder: (context) => PrivacyPage()),
               );
             },
           ),

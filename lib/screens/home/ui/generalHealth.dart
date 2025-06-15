@@ -210,7 +210,7 @@ class GeneralHealth extends StatelessWidget {
               }
 
               if (state is DashboardLoaded) {
-                final data = state.dashboardData;
+                final data = state.data;
 
                 // Extract values from the new data structure
                 final bloodPressure =

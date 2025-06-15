@@ -9,8 +9,8 @@ import 'package:flutter_project/screens/home/ui/components/serviceItem.dart';
 import 'package:flutter_project/screens/privacy.dart';
 import 'package:flutter_project/screens/profile.dart';
 import 'package:flutter_project/screens/recommendation.dart';
-import 'package:flutter_project/screens/home/ui/services.dart';
-import 'package:flutter_project/screens/medicine.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/services.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/medicine.dart';
 import 'package:flutter_project/screens/document.dart';
 import 'package:flutter_project/screens/setting/setting.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
@@ -113,8 +113,8 @@ class HomePage extends StatelessWidget {
                                 'See all',
                                 style: TextStyle(
                                     fontSize: 14,
-                                    color: const Color(0xFF036666)
-                                        .withOpacity(0.52),
+                                    color:
+                                        const Color(0xFF036666).withAlpha(133),
                                     fontWeight: FontWeight.w500),
                               ),
                             ),
@@ -157,7 +157,8 @@ class HomePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Medicine()),
+                                  builder: (context) =>
+                                      MedicinePage(medicines: [])),
                             );
                           },
                           topPadding: 10,
@@ -169,7 +170,7 @@ class HomePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Document()),
+                                  builder: (context) => DocumentPage()),
                             );
                           },
                           topPadding: 10,
@@ -180,7 +181,8 @@ class HomePage extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Family()),
+                              MaterialPageRoute(
+                                  builder: (context) => FamilyPage()),
                             );
                           },
                           topPadding: 10,
@@ -208,7 +210,8 @@ class HomePage extends StatelessWidget {
                 if (index == 3) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const Profile()),
+                    MaterialPageRoute(
+                        builder: (context) => const ProfilePage()),
                   );
                 }
               },

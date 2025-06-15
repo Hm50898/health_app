@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class PrescriptionPage extends StatefulWidget {
-  const PrescriptionPage({super.key});
-
+class MDetailPage extends StatefulWidget {
   @override
   _mdetailState createState() => _mdetailState();
 }
 
-class _mdetailState extends State<PrescriptionPage> {
+class _mdetailState extends State<MDetailPage> {
   final TextStyle fadedTextStyle = TextStyle(
     color: Color.fromRGBO(0, 0, 0, 0.41),
     fontWeight: FontWeight.bold,
@@ -15,39 +13,39 @@ class _mdetailState extends State<PrescriptionPage> {
 
   final List<Map<String, String>> records = [
     {
-      'date': '18 Feb 2024',
-      'doctor': 'Ali Ahmed',
-      'med1': 'Sefotax',
-      'med2': 'panadol',
-      'med3': 'Glycodal',
+      'date': '           18 Feb 2024',
+      'treatment': '                   ERASTAPEX',
+      'potion': '                    One Tablet',
+      'for': '                      10 Days',
+      'every': '                    24 Hours',
     },
     {
-      'date': '18 Feb 2024',
-      'doctor': 'Ali Ahmed',
-      'med1': 'Sefotax',
-      'med2': 'panadol',
-      'med3': 'Glycodal',
+      'date': '           1 Jul 2024',
+      'treatment': '                   Medicine2',
+      'potion': '                    One Tablet',
+      'for': '                      14 days',
+      'every': '                    6 Hours',
     },
     {
-      'date': '18 Feb 2024',
-      'doctor': 'Ali Ahmed',
-      'med1': 'Sefotax',
-      'med2': 'panadol',
-      'med3': 'Glycodal',
+      'date': '           8 Feb 2025',
+      'treatment': '                   Medicine3',
+      'potion': '                    10 ml',
+      'for': '                      6 Days',
+      'every': '                    12 Hours',
     },
     {
-      'date': '18 Feb 2024',
-      'doctor': 'Ali Ahmed',
-      'med1': 'Sefotax',
-      'med2': 'panadol',
-      'med3': 'Glycodal',
+      'date': '           5 Jan 2025',
+      'treatment': '                   Medicine4',
+      'potion': '                    One Tablet',
+      'for': '                      9 Days',
+      'every': '                    8 Hours',
     },
     {
-      'date': '18 Feb 2024',
-      'doctor': 'Ali Ahmed',
-      'med1': 'Sefotax',
-      'med2': 'panadol',
-      'med3': 'Glycodal',
+      'date': '           10 Feb 2025',
+      'treatment': '                   Medicine5',
+      'potion': '                    One Tablet',
+      'for': '                     10 Days',
+      'every': '                    24 Hours',
     },
   ];
 
@@ -90,7 +88,7 @@ class _mdetailState extends State<PrescriptionPage> {
                     ),
                     SizedBox(width: 20),
                     Text(
-                      'Prescription',
+                      'Medicine',
                       style: TextStyle(
                         color: Color(0xFF036666),
                         fontSize: 25,
@@ -167,52 +165,39 @@ class _mdetailState extends State<PrescriptionPage> {
                               ],
                             ),
                             SizedBox(height: 15),
-                            Directionality(
-                              textDirection: TextDirection.rtl,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                          child: Text(record['doctor'] ?? '',
-                                              textAlign: TextAlign.right)),
-                                      SizedBox(width: 10),
-                                      Text('Doctor', style: fadedTextStyle),
+                                      Text('Treatment:', style: fadedTextStyle),
+                                      SizedBox(height: 5),
+                                      Text('Potion:', style: fadedTextStyle),
+                                      SizedBox(height: 5),
+                                      Text('For:', style: fadedTextStyle),
+                                      SizedBox(height: 5),
+                                      Text('Every:', style: fadedTextStyle),
                                     ],
                                   ),
-                                  SizedBox(height: 5),
-                                  Row(
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                          child: Text(record['med1'] ?? '',
-                                              textAlign: TextAlign.right)),
-                                      SizedBox(width: 10),
-                                      Text('Medicine 1', style: fadedTextStyle),
+                                      Text(record['treatment'] ?? ''),
+                                      SizedBox(height: 5),
+                                      Text(record['potion'] ?? ''),
+                                      SizedBox(height: 5),
+                                      Text(record['for'] ?? ''),
+                                      SizedBox(height: 5),
+                                      Text(record['every'] ?? ''),
                                     ],
                                   ),
-                                  SizedBox(height: 5),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: Text(record['med2'] ?? '',
-                                              textAlign: TextAlign.right)),
-                                      SizedBox(width: 10),
-                                      Text('Medicine 2', style: fadedTextStyle),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: Text(record['med3'] ?? '',
-                                              textAlign: TextAlign.right)),
-                                      SizedBox(width: 10),
-                                      Text('Medicine 3', style: fadedTextStyle),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

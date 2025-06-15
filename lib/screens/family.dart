@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'member.dart';
 
-void main() {
-  runApp(Family());
+class FamilyPage extends StatefulWidget {
+  @override
+  _FamilyPageState createState() => _FamilyPageState();
 }
 
-class Family extends StatelessWidget {
+class _FamilyPageState extends State<FamilyPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

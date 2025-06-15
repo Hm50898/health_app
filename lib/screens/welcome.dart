@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'choose.dart';
 
-void main() {
-  runApp(Welcome());
+class WelcomePage extends StatefulWidget {
+  @override
+  _WelcomePageState createState() => _WelcomePageState();
 }
 
-class Welcome extends StatelessWidget {
+class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +48,7 @@ class Welcome extends StatelessWidget {
                 width: 175,
                 height: 62,
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Text(
+                child: const Text(
                   'Health Mate',
                   textAlign: TextAlign.left,
                   style: TextStyle(
@@ -70,8 +71,8 @@ class Welcome extends StatelessWidget {
               child: Container(
                 width: 270,
                 height: 50,
-                padding: EdgeInsets.only(top: 10),
-                child: Text(
+                padding: const EdgeInsets.only(top: 10),
+                child: const Text(
                   'Welcome to Health Mate',
                   textAlign: TextAlign.left,
                   style: TextStyle(
@@ -122,7 +123,7 @@ class Welcome extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Choose()),
+                      MaterialPageRoute(builder: (context) => ChoosePage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -131,7 +132,7 @@ class Welcome extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Get Started',
                     textAlign: TextAlign.center,
                     style: TextStyle(

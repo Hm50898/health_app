@@ -6,26 +6,12 @@ import 'package:path/path.dart' as path;
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'dart:ui';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Document(),
-    );
-  }
-}
-
-class Document extends StatefulWidget {
+class DocumentPage extends StatefulWidget {
   @override
   _DocumentState createState() => _DocumentState();
 }
 
-class _DocumentState extends State<Document> {
+class _DocumentState extends State<DocumentPage> {
   String? selectedType;
   List<String> options = ["Prescription", "LabTest", "Medical Image"];
   File? _selectedFile;

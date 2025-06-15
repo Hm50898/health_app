@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import 'package:flutter_project/screens/home/cubit/home_states.dart';
-import 'package:flutter_project/screens/home/ui/prescription.dart';
+import 'package:flutter_project/screens/home/models/health_record_model.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/prescription.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/medicine.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/disease.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/mlab.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/imagdetal.dart';
 
 class Services extends StatelessWidget {
   const Services({super.key});
@@ -86,6 +91,7 @@ class Services extends StatelessWidget {
               }
 
               if (state is HealthRecordSummaryLoaded) {
+                final healthRecord = HealthRecordModel.fromJson(state.data);
                 return SingleChildScrollView(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -102,47 +108,80 @@ class Services extends StatelessWidget {
                           _buildServiceCard(
                             'Medicine',
                             'images/Primary(2).png',
+                            healthRecord.medicines.length,
                             () {
-                              // Navigate to Medicine page
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MedicinePage(
+                                      medicines: healthRecord.medicines),
+                                ),
+                              );
                             },
                           ),
                           _buildServiceCard(
                             'BMI',
                             'images/Primary (3).png',
+                            healthRecord.bmiData != null ? 1 : 0,
                             () {
-                              // Navigate to BMI page
+                              if (healthRecord.bmiData != null) {
+                                _showBMIDetails(context, healthRecord.bmiData!);
+                              }
                             },
                           ),
                           _buildServiceCard(
                             'Disease',
                             'images/Primary (4).png',
+                            healthRecord.diseases.length,
                             () {
-                              // Navigate to Disease page
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DiseasePage(
+                                      diseases: healthRecord.diseases),
+                                ),
+                              );
                             },
                           ),
                           _buildServiceCard(
                             'Lab',
                             'images/lab.png',
-                            () {
-                              // Navigate to Lab page
-                            },
-                          ),
-                          _buildServiceCard(
-                            'Imaging',
-                            'images/Imaging.png',
-                            () {
-                              // Navigate to Imaging page
-                            },
-                          ),
-                          _buildServiceCard(
-                            'Prescription',
-                            'images/Prescription.png',
+                            healthRecord.labTests.length,
                             () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const PrescriptionPage(),
+                                      LabPage(labTests: healthRecord.labTests),
+                                ),
+                              );
+                            },
+                          ),
+                          _buildServiceCard(
+                            'Imaging',
+                            'images/Imaging.png',
+                            healthRecord.imaging.length,
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ImagingPage(
+                                      imaging: healthRecord.imaging),
+                                ),
+                              );
+                            },
+                          ),
+                          _buildServiceCard(
+                            'Prescription',
+                            'images/Prescription.png',
+                            healthRecord.prescriptions.length,
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PrescriptionPage(
+                                      prescriptions:
+                                          healthRecord.prescriptions),
                                 ),
                               );
                             },
@@ -162,7 +201,8 @@ class Services extends StatelessWidget {
     );
   }
 
-  Widget _buildServiceCard(String title, String imagePath, VoidCallback onTap) {
+  Widget _buildServiceCard(
+      String title, String imagePath, int count, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -184,8 +224,43 @@ class Services extends StatelessWidget {
                 color: Color(0xFF036666),
               ),
             ),
+            const SizedBox(height: 4),
+            Text(
+              '$count items',
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showBMIDetails(BuildContext context, BMIData bmiData) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('BMI Details'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Height: ${bmiData.height} cm'),
+            Text('Weight: ${bmiData.weight} kg'),
+            Text('BMI: ${bmiData.bmi.toStringAsFixed(1)}'),
+            Text('Category: ${bmiData.category}'),
+            Text(
+                'Last Updated: ${bmiData.measurementDate.toString().split(' ')[0]}'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
       ),
     );
   }

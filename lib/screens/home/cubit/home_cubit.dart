@@ -81,7 +81,7 @@ class HomeCubit extends Cubit<HomeState> {
       final normalized = base64Url.normalize(payload);
       final decoded = utf8.decode(base64Url.decode(normalized));
       final decodedToken = json.decode(decoded);
-      final patientId = decodedToken['PatientId'];
+      final patientId = decodedToken['PatientId'] ?? 1;
 
       final response = await http.get(
         Uri.parse('$baseUrl/HealthRecord/Summary/$patientId'),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+class OnePage extends StatefulWidget {
+  const OnePage({super.key});
+
+  @override
+  State<OnePage> createState() => _OnePageState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class _OnePageState extends State<OnePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,7 +67,6 @@ class ProfileScreen extends StatelessWidget {
             alignment: Alignment.center,
           ),
           const SizedBox(height: 90),
-
           ProfileCard(
             imagePath: "images/Arabic.png",
             title: "Arabic",
@@ -77,14 +77,14 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 75),
           ElevatedButton(
-            onPressed: () {
-            },
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF036666),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 12),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 150, vertical: 12),
             ),
             child: const Text(
               "Done",
@@ -95,7 +95,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
-
         ],
       ),
     );
@@ -155,11 +154,8 @@ class ProfileCard extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-
             ),
             const SizedBox(height: 30),
-
-
             Text(
               title,
               style: const TextStyle(
@@ -168,7 +164,6 @@ class ProfileCard extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-
           ],
         ),
       ),
