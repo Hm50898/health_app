@@ -11,6 +11,9 @@ import 'package:flutter_project/screens/profile.dart';
 import 'package:flutter_project/screens/recommendation.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/services.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/medicine.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/ibm.dart';
+import 'package:flutter_project/screens/home/ui/healthRecord/disease_list.dart';
+import 'package:flutter_project/screens/home/models/health_record_model.dart';
 import 'package:flutter_project/screens/document.dart';
 import 'package:flutter_project/screens/setting/setting.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
@@ -26,7 +29,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(),
+      create: (context) => HomeCubit()..getHealthRecordSummary(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           final cubit = context.read<HomeCubit>();
@@ -121,19 +124,72 @@ class HomePage extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 12),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ServiceItem(
                               imagePath: 'images/Primary(2).png',
                               label: 'Medicine',
+                              onTap: () {
+                                if (state is HealthRecordSummaryLoaded) {
+                                  final healthRecord =
+                                      HealthRecordModel.fromJson(state.data);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MedicinePage(
+                                        medicinesSummary:
+                                            healthRecord.medicinesSummary,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  cubit.getHealthRecordSummary();
+                                }
+                              },
                             ),
                             ServiceItem(
-                                imagePath: 'images/Primary (3).png',
-                                label: 'BMI'),
+                              imagePath: 'images/Primary (3).png',
+                              label: 'IBM',
+                              onTap: () {
+                                if (state is HealthRecordSummaryLoaded) {
+                                  final healthRecord =
+                                      HealthRecordModel.fromJson(state.data);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => IBMPage(
+                                        encountersSummary:
+                                            healthRecord.encountersSummary,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  cubit.getHealthRecordSummary();
+                                }
+                              },
+                            ),
                             ServiceItem(
-                                imagePath: 'images/Primary (4).png',
-                                label: 'Disease'),
+                              imagePath: 'images/Primary (4).png',
+                              label: 'Disease',
+                              onTap: () {
+                                if (state is HealthRecordSummaryLoaded) {
+                                  final healthRecord =
+                                      HealthRecordModel.fromJson(state.data);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DiseaseListScreen(
+                                        conditionsSummary:
+                                            healthRecord.conditionsSummary,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  cubit.getHealthRecordSummary();
+                                }
+                              },
+                            ),
                           ],
                         ),
                         const SizedBox(height: 20),
@@ -154,12 +210,21 @@ class HomePage extends StatelessWidget {
                           text: 'Add Medicine',
                           imagePath: 'images/medicine+.png',
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      MedicinePage(medicinesSummary: [])),
-                            );
+                            if (state is HealthRecordSummaryLoaded) {
+                              final healthRecord =
+                                  HealthRecordModel.fromJson(state.data);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MedicinePage(
+                                    medicinesSummary:
+                                        healthRecord.medicinesSummary,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              cubit.getHealthRecordSummary();
+                            }
                           },
                           topPadding: 10,
                         ),
