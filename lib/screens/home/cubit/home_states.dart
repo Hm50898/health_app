@@ -41,3 +41,59 @@ class HealthRecordSummaryError extends HomeState {
 
   HealthRecordSummaryError(this.message);
 }
+
+class LabTestDetailsLoading extends HomeState {}
+
+class LabTestDetailsLoaded extends HomeState {
+  final Map<String, dynamic> data;
+
+  LabTestDetailsLoaded(this.data);
+}
+
+class LabTestDetailsError extends HomeState {
+  final String message;
+
+  LabTestDetailsError(this.message);
+}
+
+class MedicalImageDetailsLoading extends HomeState {}
+
+class MedicalImageDetailsLoaded extends HomeState {
+  final Map<String, dynamic> data;
+
+  MedicalImageDetailsLoaded(this.data);
+}
+
+class MedicalImageDetailsError extends HomeState {
+  final String message;
+
+  MedicalImageDetailsError(this.message);
+}
+
+class PrescriptionDetailsLoading extends HomeState {}
+
+class PrescriptionDetailsLoaded extends HomeState {
+  final Map<String, dynamic> data;
+
+  PrescriptionDetailsLoaded(this.data);
+}
+
+class PrescriptionDetailsError extends HomeState {
+  final String message;
+
+  PrescriptionDetailsError(this.message);
+}
+
+class ImageDownloadLoading extends HomeState {}
+
+class ImageDownloadLoaded extends HomeState {
+  final String imagePath;
+
+  ImageDownloadLoaded(this.imagePath);
+}
+
+class ImageDownloadError extends HomeState {
+  final String message;
+
+  ImageDownloadError(this.message);
+}

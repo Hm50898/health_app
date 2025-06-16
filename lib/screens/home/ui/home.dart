@@ -15,11 +15,9 @@ import 'package:flutter_project/screens/home/ui/healthRecord/ibm.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/disease_list.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 import 'package:flutter_project/screens/document.dart';
-import 'package:flutter_project/screens/setting/setting.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import '../../family.dart';
 import 'generalHealth.dart';
-import '../../help.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -28,6 +26,21 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+
+    // Calculate dynamic sizes based on screen dimensions
+    const horizontalPadding = 22.0;
+    final verticalPadding = screenHeight * 0.02;
+    final iconSize = screenWidth * 0.1;
+    final badgeSize = screenWidth * 0.08;
+    final cardHeight = screenHeight * 0.25;
+    final imageSize = screenWidth * 0.4;
+    const fontSize = 25.0;
+    const smallFontSize = 18.0;
+    final buttonSize = screenWidth * 0.12;
+
     return BlocProvider(
       create: (context) => HomeCubit()..getHealthRecordSummary(),
       child: BlocBuilder<HomeCubit, HomeState>(
@@ -40,69 +53,83 @@ class HomePage extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: Colors.white.withOpacity(0.2),
               leading: IconButton(
-                icon: const Icon(Icons.menu, color: Color(0xFF036666)),
+                icon: Icon(Icons.menu,
+                    color: const Color(0xFF036666), size: screenWidth * 0.06),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
               elevation: 0,
               actions: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 20),
+                  padding: EdgeInsets.only(right: horizontalPadding),
                   child: Row(
                     children: [
-                      _buildTransformedImage('images/Primary.png', 40),
-                      const SizedBox(width: 10),
-                      _buildStackedImages(),
+                      _buildTransformedImage('images/Primary.png', iconSize),
+                      SizedBox(width: screenWidth * 0.02),
+                      _buildStackedImages(iconSize, badgeSize),
                     ],
                   ),
                 ),
               ],
             ),
             drawer: const Homedrawer(),
+            floatingActionButton: FloatingActionButton(
+              mini: true,
+              backgroundColor: const Color(0xFF036666),
+              onPressed: () {
+                cubit.toggleButtonsVisibility();
+              },
+              child: Icon(cubit.isButtonsVisible ? Icons.close : Icons.add),
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             body: Stack(
               children: [
                 SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 41),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Hello, Ali',
                             style: TextStyle(
-                                fontSize: 24,
+                                fontSize: fontSize,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF036666))),
-                        const SizedBox(height: 4),
+                                color: const Color(0xFF036666))),
+                        SizedBox(height: verticalPadding * 0.5),
                         const Text(
                           'Save time and money, get the best medical service.',
                           style: TextStyle(
-                              fontSize: 12,
+                              fontSize: smallFontSize,
                               height: 1.5,
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF036666)),
+                              color: const Color(0xFF036666)),
                         ),
-                        const SizedBox(height: 8),
-                        _buildSearchBar(),
-                        const SizedBox(height: 20),
-                        _buildPromoCard(context),
-                        const SizedBox(height: 20),
+                        SizedBox(height: verticalPadding),
+                        _buildSearchBar(screenWidth),
+                        SizedBox(height: verticalPadding),
+                        _buildPromoCard(context, cardHeight, imageSize,
+                            fontSize, smallFontSize),
+                        SizedBox(height: verticalPadding),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text(
                               'Health Record',
                               style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: fontSize,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF036666)),
                             ),
                             TextButton(
                               style: TextButton.styleFrom(
                                 backgroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 4),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: screenWidth * 0.03,
+                                    vertical: verticalPadding * 0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius:
+                                      BorderRadius.circular(screenWidth * 0.03),
                                 ),
                               ),
                               onPressed: () {
@@ -115,7 +142,7 @@ class HomePage extends StatelessWidget {
                               child: Text(
                                 'See all',
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: smallFontSize,
                                     color:
                                         const Color(0xFF036666).withAlpha(133),
                                     fontWeight: FontWeight.w500),
@@ -123,7 +150,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(height: verticalPadding * 0.6),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -192,17 +219,18 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
-                        _buildSecondPromoCard(context, cubit),
-                        const SizedBox(height: 100),
+                        SizedBox(height: verticalPadding),
+                        _buildSecondPromoCard(context, cubit, cardHeight,
+                            imageSize, fontSize, smallFontSize, buttonSize),
+                        SizedBox(height: screenHeight * 0.12),
                       ],
                     ),
                   ),
                 ),
                 if (cubit.isButtonsVisible)
                   Positioned(
-                    right: 16,
-                    bottom: 130,
+                    right: horizontalPadding,
+                    bottom: screenHeight * 0.15,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -226,7 +254,7 @@ class HomePage extends StatelessWidget {
                               cubit.getHealthRecordSummary();
                             }
                           },
-                          topPadding: 10,
+                          topPadding: verticalPadding,
                         ),
                         ActionButton(
                           text: 'Add Document',
@@ -238,7 +266,7 @@ class HomePage extends StatelessWidget {
                                   builder: (context) => DocumentPage()),
                             );
                           },
-                          topPadding: 10,
+                          topPadding: verticalPadding,
                         ),
                         ActionButton(
                           text: 'Add family member',
@@ -250,7 +278,7 @@ class HomePage extends StatelessWidget {
                                   builder: (context) => FamilyPage()),
                             );
                           },
-                          topPadding: 10,
+                          topPadding: verticalPadding,
                         ),
                       ],
                     ),
@@ -263,6 +291,8 @@ class HomePage extends StatelessWidget {
               selectedItemColor: Colors.white,
               unselectedItemColor: Colors.white70,
               currentIndex: cubit.selectedIndex,
+              selectedFontSize: smallFontSize,
+              unselectedFontSize: smallFontSize,
               onTap: (index) {
                 cubit.changeIndex(index);
                 if (index == 2) {
@@ -283,30 +313,32 @@ class HomePage extends StatelessWidget {
               items: [
                 BottomNavigationBarItem(
                   icon: Padding(
-                    padding: const EdgeInsets.only(bottom: 0.0),
+                    padding: EdgeInsets.only(bottom: verticalPadding * 0.5),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
                         Image.asset('images/preview.png',
-                            width: 30, height: 30),
-                        Image.asset('images/home.png', width: 24, height: 24),
+                            width: buttonSize, height: buttonSize),
+                        Image.asset('images/home.png',
+                            width: buttonSize * 0.8, height: buttonSize * 0.8),
                       ],
                     ),
                   ),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Image.asset('images/report.png', width: 24, height: 24),
+                  icon: Image.asset('images/report.png',
+                      width: buttonSize * 0.8, height: buttonSize * 0.8),
                   label: 'Report',
                 ),
                 BottomNavigationBarItem(
                   icon: Image.asset('images/recommendation.png',
-                      width: 24, height: 24),
+                      width: buttonSize * 0.8, height: buttonSize * 0.8),
                   label: 'Recommendation',
                 ),
                 BottomNavigationBarItem(
-                  icon:
-                      Image.asset('images/profile.png', width: 24, height: 24),
+                  icon: Image.asset('images/profile.png',
+                      width: buttonSize * 0.8, height: buttonSize * 0.8),
                   label: 'Profile',
                 ),
               ],
@@ -317,44 +349,47 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(double screenWidth) {
     return Container(
-      width: 349,
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 5),
+      width: double.infinity,
+      height: screenWidth * 0.12,
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(screenWidth * 0.05),
         border: Border.all(color: const Color(0x2B000000)),
       ),
       child: TextFormField(
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: TextStyle(
-              color: Color(0x80048581),
-              fontSize: 18,
+              color: const Color(0x80048581),
+              fontSize: screenWidth * 0.045,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w500),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-          suffixIcon: Icon(Icons.search, color: Color(0xFF036666), size: 25),
+          contentPadding: EdgeInsets.symmetric(
+              vertical: screenWidth * 0.02, horizontal: screenWidth * 0.04),
+          suffixIcon: Icon(Icons.search,
+              color: const Color(0xFF036666), size: screenWidth * 0.06),
         ),
       ),
     );
   }
 
-  Widget _buildPromoCard(BuildContext context) {
+  Widget _buildPromoCard(BuildContext context, double cardHeight,
+      double imageSize, double fontSize, double smallFontSize) {
     return Container(
       width: double.infinity,
-      height: 194,
+      height: cardHeight,
       decoration: BoxDecoration(
         color: const Color(0xFFA3DAF2),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(cardHeight * 0.12),
       ),
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 0),
+            padding: EdgeInsets.only(left: cardHeight * 0.05),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,90 +404,88 @@ class HomePage extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFA3DAF2),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 0, vertical: cardHeight * 0.04),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(cardHeight * 0.04),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'General',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: fontSize,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
                 ),
-                const Text(
+                Text(
                   'Health',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: fontSize, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 10),
-                const Text(
+                SizedBox(height: cardHeight * 0.05),
+                Text(
                   'Your medical record',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: smallFontSize),
                 ),
               ],
             ),
           ),
           const Spacer(),
-          Image.asset('images/homeone.png', width: 161, height: 161),
+          Image.asset('images/homeone.png',
+              width: imageSize, height: imageSize),
         ],
       ),
     );
   }
 
-  Widget _buildSecondPromoCard(BuildContext context, HomeCubit cubit) {
+  Widget _buildSecondPromoCard(
+      BuildContext context,
+      HomeCubit cubit,
+      double cardHeight,
+      double imageSize,
+      double fontSize,
+      double smallFontSize,
+      double buttonSize) {
     return Container(
       width: double.infinity,
-      height: 194,
+      height: cardHeight,
       clipBehavior: Clip.none,
       decoration: BoxDecoration(
         color: const Color(0xFFA3DAF2),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(cardHeight * 0.12),
       ),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           Row(
             children: [
-              const Padding(
-                padding: EdgeInsets.only(left: 2),
+              Padding(
+                padding: EdgeInsets.only(left: cardHeight * 0.01),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Contact',
                         style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
+                            fontSize: fontSize * 1.2,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(height: cardHeight * 0.05),
                     Text('Your Doctor',
                         style: TextStyle(
-                            fontSize: 26, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
+                            fontSize: fontSize, fontWeight: FontWeight.bold)),
+                    SizedBox(height: cardHeight * 0.05),
                     Text('Get simple consultaion.',
-                        style: TextStyle(fontSize: 12)),
+                        style: TextStyle(fontSize: smallFontSize)),
                   ],
                 ),
               ),
               const Spacer(),
               Image.asset('images/Online Doctor-rafiki 1.png',
-                  width: 161, height: 171),
+                  width: imageSize, height: imageSize * 1.05),
             ],
-          ),
-          Positioned(
-            top: 160,
-            left: 280,
-            child: FloatingActionButton(
-              mini: true,
-              backgroundColor: const Color(0xFF036666),
-              onPressed: () {
-                cubit.toggleButtonsVisibility();
-              },
-              child: Icon(cubit.isButtonsVisible ? Icons.close : Icons.add),
-            ),
           ),
         ],
       ),
@@ -466,14 +499,15 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildStackedImages() {
+  Widget _buildStackedImages(double iconSize, double badgeSize) {
     return Stack(
       children: [
-        _buildTransformedImage('images/Primary(1).png', 40),
+        _buildTransformedImage('images/Primary(1).png', iconSize),
         Positioned(
-          top: 3,
-          left: 14,
-          child: Image.asset('images/Ellipse216.png', width: 30, height: 30),
+          top: iconSize * 0.1,
+          left: iconSize * 0.35,
+          child: Image.asset('images/Ellipse216.png',
+              width: badgeSize, height: badgeSize),
         ),
       ],
     );

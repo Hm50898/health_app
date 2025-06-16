@@ -140,8 +140,9 @@ class Services extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ImagingPage(
-                                imaging: healthRecord.medicalImagesSummary,
+                              builder: (context) => ImagingListScreen(
+                                medicalImagesSummary:
+                                    healthRecord.medicalImagesSummary,
                               ),
                             ),
                           );
@@ -155,7 +156,7 @@ class Services extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PrescriptionPage(
+                              builder: (context) => PrescriptionListScreen(
                                 prescriptionsSummary:
                                     healthRecord.prescriptionsSummary,
                               ),
