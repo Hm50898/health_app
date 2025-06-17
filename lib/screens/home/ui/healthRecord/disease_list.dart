@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 import 'package:flutter_project/screens/home/ui/details/disease_details.dart';
+import 'package:intl/intl.dart';
 
 class DiseaseListScreen extends StatelessWidget {
   final List<Disease> conditionsSummary;
@@ -80,20 +81,71 @@ class DiseaseListScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
+
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        disease.conditionName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF036666),
+                      Center(
+                        child: Text(
+                          DateFormat('d MMM yyyy').format(disease.date),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color:  Color(0xFF036666),
+                          ),
                         ),
                       ),
+
                       const SizedBox(height: 8),
-                      Text('Severity: ${disease.severity}'),
-                      Text('Date: ${disease.date.toString().split(' ')[0]}'),
-                      Text('Note: ${disease.note}'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Disease Name',style:  TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,)),
+                          Text(disease.conditionName,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,)
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Note',style:  TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,)),
+                          Text(disease.note,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,)
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Severity',style:  TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,)),
+                          Text(disease.severity,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,)
+                          ),
+                        ],
+                      ),
+
+
+
                     ],
                   ),
                 ),

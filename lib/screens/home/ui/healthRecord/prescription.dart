@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 import 'package:flutter_project/screens/home/ui/details/prescription_details.dart';
+import 'package:intl/intl.dart';
 
 class PrescriptionListScreen extends StatelessWidget {
   final List<Prescription> prescriptionsSummary;
@@ -87,19 +88,49 @@ class PrescriptionListScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Prescription #${prescription.prescriptionId}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF036666),
+                        Center(
+                          child: Text(
+                            DateFormat('d MMM yyyy').format(prescription.prescriptionDate),
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color:  Color(0xFF036666),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Text('Doctor: ${prescription.publisher}'),
-                        Text(
-                            'Date: ${prescription.prescriptionDate.toString().split(' ')[0]}'),
-                        Text('Condition: ${prescription.conditionName}'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Issuer',style:  TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey,)),
+                            Text(prescription.publisher,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,)
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Condition',style:  TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey,)),
+                            Text(prescription.conditionName,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,)
+                            ),
+                          ],
+                        ),
+
                       ],
                     ),
                   ),

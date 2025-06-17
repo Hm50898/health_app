@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
+import 'package:intl/intl.dart';
 
 class DiseasePage extends StatelessWidget {
   final List<Disease> conditionsSummary;
@@ -71,6 +72,16 @@ class DiseasePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Center(
+                      child: Text(
+                        DateFormat('d MMM yyyy').format(disease.date),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color:  Color(0xFF036666),
+                        ),
+                      ),
+                    ),
                     Text(
                       disease.conditionName,
                       style: const TextStyle(

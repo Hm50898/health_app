@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
+import 'package:intl/intl.dart';
 
 class MedicinePage extends StatelessWidget {
   final List<Medicine> medicinesSummary;
@@ -64,29 +65,88 @@ class MedicinePage extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFF036666)),
+                side:  BorderSide(color: medicine.isOngoing ? const Color(0xFF036666) : Colors.red),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      medicine.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF036666),
+                    Center(
+                      child: Text(
+                        DateFormat('d MMM yyyy').format(medicine.date),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color:  Color(0xFF036666),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text('Dosage: ${medicine.dosePerTime}'),
-                    Text('Frequency: Every ${medicine.frequencyInHours} hours'),
-                    Text('Duration: ${medicine.durationInDays} days'),
-                    Text(
-                        'Start Date: ${medicine.date.toString().split(' ')[0]}'),
-                    Text(
-                        'Status: ${medicine.isOngoing ? "Ongoing" : "Completed"}'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Treatment',style:  TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,)),
+                        Text(medicine.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,)
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                       const Text('Potion',style:  TextStyle(
+                         fontSize: 16,
+                         fontWeight: FontWeight.w500,
+                         color: Colors.grey,)),
+                        Text(medicine.dosePerTime,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,)
+                            ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Every',style:  TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,)),
+                        Text(' ${medicine.frequencyInHours} hours',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,)
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('For',style:  TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,)),
+                        Text('${medicine.durationInDays} days',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,)
+                        ),
+                      ],
+                    ),
+
                   ],
                 ),
               ),

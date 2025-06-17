@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
     final iconSize = screenWidth * 0.1;
     final badgeSize = screenWidth * 0.08;
     final cardHeight = screenHeight * 0.25;
-    final imageSize = screenWidth * 0.4;
+    final imageSize = screenWidth * 0.3;
     const fontSize = 25.0;
     const smallFontSize = 18.0;
     final buttonSize = screenWidth * 0.12;

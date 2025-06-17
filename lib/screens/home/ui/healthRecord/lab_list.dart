@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 import 'package:flutter_project/screens/home/ui/details/lab_test_details.dart';
+import 'package:intl/intl.dart';
 
 class LabListScreen extends StatelessWidget {
   final List<LabTest> labTestsSummary;
@@ -65,43 +66,78 @@ class LabListScreen extends StatelessWidget {
             itemCount: labTestsSummary.length,
             itemBuilder: (context, index) {
               final labTest = labTestsSummary[index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LabTestDetailsScreen(
-                        labTestId: labTest.labTestId,
+              return  Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: Color(0xFF036666)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.science_outlined,
+                                color: Color(0xFF036666),
+                              ),
+                              Text(labTest.testName,style: const  TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,)),
+                            ],
+                          ),
+                          Text(
+                            DateFormat('d MMM yyyy').format(labTest.testDate),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color:  Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  );
-                },
-                child: Card(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(color: Color(0xFF036666)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          labTest.testName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF036666),
+
+                      const SizedBox(height: 8),
+                      // Text('Result: ${labTest.result}'),
+                      // Text('Note: ${labTest.note}'),
+
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LabTestDetailsScreen(
+                                  labTestId: labTest.labTestId,
+                                ),
+                              ),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: const Color(0xFF036666),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'View Details',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text('Result: ${labTest.result}'),
-                        Text(
-                            'Test Date: ${labTest.testDate.toString().split(' ')[0]}'),
-                        Text('Note: ${labTest.note}'),
-                      ],
-                    ),
+                      )
+
+                    ],
                   ),
                 ),
               );
