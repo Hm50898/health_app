@@ -317,8 +317,7 @@ class HomePage extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Image.asset('images/preview.png',
-                            width: buttonSize, height: buttonSize),
+                        
                         Image.asset('images/home.png',
                             width: buttonSize * 0.8, height: buttonSize * 0.8),
                       ],
