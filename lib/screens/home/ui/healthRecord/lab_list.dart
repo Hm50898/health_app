@@ -86,6 +86,7 @@ class LabListScreen extends StatelessWidget {
                                 Icons.science_outlined,
                                 color: Color(0xFF036666),
                               ),
+                              const SizedBox(width: 5),
                               Text(labTest.testName,style: const  TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,

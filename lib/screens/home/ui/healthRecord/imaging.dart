@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import 'package:flutter_project/screens/home/models/health_record_model.dart';
 import 'package:flutter_project/screens/home/ui/details/imaging_details.dart';
+import 'package:intl/intl.dart';
 
 class ImagingListScreen extends StatelessWidget {
   final List<Imaging> medicalImagesSummary;
@@ -65,41 +66,78 @@ class ImagingListScreen extends StatelessWidget {
             itemCount: medicalImagesSummary.length,
             itemBuilder: (context, index) {
               final image = medicalImagesSummary[index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ImagingDetailsScreen(
-                        imageId: image.medicalImageId,
+              return Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: const BorderSide(color: Color(0xFF036666)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.image,
+                                color: Color(0xFF036666),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(image.medicalImageName,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  )),
+                            ],
+                          ),
+                          Text(
+                            DateFormat('d MMM yyyy')
+                                .format(image.medicalImageDate),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  );
-                },
-                child: Card(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(color: Color(0xFF036666)),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          image.medicalImageName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF036666),
+                      const SizedBox(height: 8),
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ImagingDetailsScreen(
+                                  imageId: image.medicalImageId,
+                                ),
+                              ),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: const Color(0xFF036666),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            'View Details',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                            'Date: ${image.medicalImageDate.toString().split(' ')[0]}'),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               );
