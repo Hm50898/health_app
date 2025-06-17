@@ -463,7 +463,7 @@ class HomePage extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: cardHeight * 0.01),
+                padding: EdgeInsets.only(left:10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
