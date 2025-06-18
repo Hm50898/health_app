@@ -17,6 +17,9 @@ class _LogState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
 
+  String? emailError;
+  String? passwordError;
+
   bool _isValidEmail(String email) {
     return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
@@ -140,95 +143,112 @@ class _LogState extends State<LoginPage> {
                   Positioned(
                     top: 400,
                     left: 18,
-                    child: Container(
-                      width: 353,
-                      height: 51,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: const Color(0x1A000000),
-                          width: 1,
-                        ),
-                      ),
-                      child: TextFormField(
-                        controller: emailController,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter Your Email',
-                          hintStyle: TextStyle(
-                            color: Color(0x80048581),
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 353,
+                          height: 52,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: const Color(0x1A000000),
+                              width: 1,
+                            ),
                           ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 10),
+                          child: TextFormField(
+                            controller: emailController,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter Your Email',
+                              hintStyle: TextStyle(
+                                color: Color(0x80048581),
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding:
+                                  EdgeInsets.symmetric(vertical: 10),
+                            ),
+                          ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Email is required';
-                          }
-                          if (!_isValidEmail(value)) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
-                      ),
+                        if (emailError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4, left: 8),
+                            child: Text(
+                              emailError!,
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 12),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   Positioned(
-                    top: 470,
+                    top: 480,
                     left: 18,
-                    child: Container(
-                      width: 353,
-                      height: 51,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: const Color(0x1A000000),
-                          width: 1,
-                        ),
-                      ),
-                      child: TextFormField(
-                        controller: passwordController,
-                        obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
-                          hintText: 'Enter Your Password',
-                          hintStyle: const TextStyle(
-                            color: Color(0x80048581),
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          border: InputBorder.none,
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 10),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.grey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 353,
+                          height: 52,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: const Color(0x1A000000),
+                              width: 1,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
+                          ),
+                          child: TextFormField(
+                            controller: passwordController,
+                            obscureText: !_isPasswordVisible,
+                            decoration: InputDecoration(
+                              hintText: 'Enter Your Password',
+                              hintStyle: const TextStyle(
+                                color: Color(0x80048581),
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              border: InputBorder.none,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.grey,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                              ),
+                              suffixIconConstraints: const BoxConstraints(
+                                minHeight: 60,
+                                minWidth: 40,
+                                maxHeight: 60,
+                              ),
+                            ),
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Password is required';
-                          }
-                          return null;
-                        },
-                      ),
+                        if (passwordError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4, left: 8),
+                            child: Text(
+                              passwordError!,
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 12),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   Positioned(
@@ -268,7 +288,30 @@ class _LogState extends State<LoginPage> {
                         onTap: state is AuthLoadingState
                             ? null
                             : () {
-                                if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  emailError = null;
+                                  passwordError = null;
+                                });
+                                bool hasError = false;
+                                if (emailController.text.isEmpty) {
+                                  setState(() {
+                                    emailError = 'Email is required';
+                                  });
+                                  hasError = true;
+                                } else if (!_isValidEmail(
+                                    emailController.text)) {
+                                  setState(() {
+                                    emailError = 'Please enter a valid email';
+                                  });
+                                  hasError = true;
+                                }
+                                if (passwordController.text.isEmpty) {
+                                  setState(() {
+                                    passwordError = 'Password is required';
+                                  });
+                                  hasError = true;
+                                }
+                                if (!hasError) {
                                   context.read<AuthCubit>().login(
                                         emailController.text.trim(),
                                         passwordController.text,
@@ -324,7 +367,7 @@ class _LogState extends State<LoginPage> {
                         text: const TextSpan(
                           children: [
                             TextSpan(
-                              text: 'Don’t have an account? ',
+                              text: "Don't have an account? ",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Poppins',
