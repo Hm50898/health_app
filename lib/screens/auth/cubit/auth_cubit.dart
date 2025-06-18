@@ -293,7 +293,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/Account/Patient'),
+        Uri.parse('$baseUrl/Patient'),
         headers: {
           'Content-Type': 'application/json',
         },

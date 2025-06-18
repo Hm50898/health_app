@@ -93,8 +93,7 @@ class _RemainState extends State<PatientInfo> {
         if (state is AuthPatientRegisterSuccessState) {
           Navigator.push(
             context,
-            MaterialPageRoute(
-                builder: (context) => Verify(email: widget.email)),
+            MaterialPageRoute(builder: (context) => LoginPage()),
           );
         }
         if (state is AuthErrorState) {
