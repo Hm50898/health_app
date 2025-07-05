@@ -68,11 +68,17 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> _saveUserData(String userId, String patientId) async {
+  Future<void> _saveUserData(
+      {required String userId,
+      required String patientId,
+      required String userName,
+      required String email}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(userIdKey, userId);
       await prefs.setString(patientIdKey, patientId);
+      await prefs.setString(userNameKey, userName);
+      await prefs.setString(emailKey, email);
       debugPrint('User data saved successfully');
     } catch (e) {
       debugPrint('Failed to save user data: $e');
@@ -139,10 +145,18 @@ class AuthCubit extends Cubit<AuthState> {
           // Save user ID and patient ID
           final userId = decodedToken['sub'];
           final patientId = decodedToken['PatientId'].toString();
-          await _saveUserData(userId, patientId);
+          final userName = decodedToken['UserName'].toString();
+          final email = decodedToken['email'].toString();
+          await _saveUserData(
+              email: email,
+              patientId: patientId,
+              userId: userId,
+              userName: userName);
 
           debugPrint('User ID: $userId');
           debugPrint('Patient ID: $patientId');
+          debugPrint('userName: $userName');
+          debugPrint('email: $email');
         }
 
         await _saveToken(token);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/cosntants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_project/screens/home/cubit/home_states.dart';
 import 'package:flutter_project/screens/home/ui/components/actionButton.dart';
 import 'package:flutter_project/screens/home/ui/components/homeDrawer.dart';
@@ -90,11 +91,30 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Hello, Ali',
-                            style: TextStyle(
-                                fontSize: fontSize,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFF036666))),
+                        FutureBuilder<SharedPreferences>(
+                          future: SharedPreferences.getInstance(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Text('Hello, ...',
+                                  style: TextStyle(
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xFF036666)));
+                            }
+
+                            final prefs = snapshot.data!;
+                            final fullName =
+                                prefs.getString(userNameKey) ?? 'User';
+                            final firstName = fullName.split(' ').first;
+
+                            return Text('Hello, $firstName',
+                                style: const TextStyle(
+                                    fontSize: fontSize,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF036666)));
+                          },
+                        ),
                         SizedBox(height: verticalPadding * 0.5),
                         const Text(
                           'Save time and money, get the best medical service.',
@@ -317,7 +337,6 @@ class HomePage extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-
                         Image.asset('images/home.png',
                             width: buttonSize * 0.8, height: buttonSize * 0.8),
                       ],
@@ -462,7 +481,7 @@ class HomePage extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left:10),
+                padding: EdgeInsets.only(left: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

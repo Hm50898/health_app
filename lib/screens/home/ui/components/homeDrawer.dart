@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_project/cosntants.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
 import 'package:flutter_project/screens/auth/ui/login.dart';
 import 'package:flutter_project/screens/help.dart';
 import 'package:flutter_project/screens/privacy.dart';
 import 'package:flutter_project/screens/setting/setting.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homedrawer extends StatelessWidget {
   const Homedrawer({super.key});
@@ -167,41 +169,72 @@ class Homedrawer extends StatelessWidget {
   }
 
   Widget _buildDrawerHeader() {
-    return DrawerHeader(
-      decoration: const BoxDecoration(color: Colors.white),
-      child: Row(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              image: const DecorationImage(
-                image: AssetImage('images/Rectangle 1.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 22),
-          const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return FutureBuilder<SharedPreferences>(
+      future: SharedPreferences.getInstance(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasError) {
+          return const DrawerHeader(
+            decoration: BoxDecoration(color: Colors.white),
+            child: Center(child: Text('Error loading user data')),
+          );
+        }
+
+        final prefs = snapshot.data!;
+        final userName = prefs.getString(userNameKey) ?? 'UserName';
+        final email = prefs.getString(emailKey) ?? 'user@example.com';
+
+        return DrawerHeader(
+          decoration: const BoxDecoration(color: Colors.white),
+          child: Row(
             children: [
-              Text('Hana Ahmed',
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF048581))),
-              SizedBox(height: 10),
-              Text('Hanaahmed233@gmail.com',
-                  style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF048581))),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: const DecorationImage(
+                    image: AssetImage('images/Rectangle 1.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 22),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userName,
+                      style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF048581)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      email,
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF048581)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

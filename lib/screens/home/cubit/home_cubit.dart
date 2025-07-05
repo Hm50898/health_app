@@ -33,6 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
       emit(DashboardLoading());
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString(tokenKey);
+      final patientId = prefs.getString(patientIdKey) ?? 1;
 
       if (token == null) {
         emit(DashboardError('No token found'));
@@ -40,7 +41,7 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
       final response = await http.get(
-        Uri.parse('$baseUrl/Patient/GetPatientDashboard?patientId=1'),
+        Uri.parse('$baseUrl/Patient/GetPatientDashboard?patientId=$patientId'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -71,18 +72,8 @@ class HomeCubit extends Cubit<HomeState> {
         return;
       }
 
-      // Decode the token to get patientId
-      final parts = token.split('.');
-      if (parts.length != 3) {
-        emit(HealthRecordSummaryError('Invalid token format'));
-        return;
-      }
-
-      final payload = parts[1];
-      final normalized = base64Url.normalize(payload);
-      final decoded = utf8.decode(base64Url.decode(normalized));
-      final decodedToken = json.decode(decoded);
-      final patientId = decodedToken['PatientId'] ?? 1;
+      final patientId = prefs.getString(patientIdKey) ?? 1;
+      print('patientId >>>>>>>>>>>>>>> $patientId');
 
       final response = await http.get(
         Uri.parse('$baseUrl/HealthRecord/Summary/$patientId'),

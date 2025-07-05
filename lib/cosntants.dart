@@ -6,6 +6,8 @@ const String baseUrl = "https://healthmate.runasp.net/api";
 const String tokenKey = 'auth_token';
 const String userIdKey = 'user_id';
 const String patientIdKey = 'patient_id';
+const String userNameKey = 'UserName';
+const String emailKey = 'email';
 
 final borderRadius = BorderRadius.circular(24);
 const Color mainColor = Color(0xFF036666);
