@@ -297,4 +297,41 @@ class HomeCubit extends Cubit<HomeState> {
       emit(ImageDownloadError('Failed to download image. Please try again.'));
     }
   }
+
+  Future<void> postMentalHealthAssessment({
+    required int assessmentType,
+    required int score,
+  }) async {
+    try {
+      emit(MentalHealthAssessmentLoading());
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(tokenKey);
+      if (token == null) {
+        emit(MentalHealthAssessmentError('No token found'));
+        return;
+      }
+      final response = await http.post(
+        Uri.parse('$baseUrl/MentalHealthAssessment'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({
+          'assessmentType': assessmentType,
+          'score': score,
+        }),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        emit(MentalHealthAssessmentSuccess(assessmentType, score));
+      } else {
+        final errorData = json.decode(response.body);
+        emit(MentalHealthAssessmentError(
+            errorData['message'] ?? 'Failed to submit assessment'));
+      }
+    } catch (e) {
+      debugPrint('Error in postMentalHealthAssessment: $e');
+      emit(MentalHealthAssessmentError(
+          'Failed to submit assessment. Please try again.'));
+    }
+  }
 }

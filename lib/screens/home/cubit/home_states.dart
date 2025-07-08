@@ -97,3 +97,16 @@ class ImageDownloadError extends HomeState {
 
   ImageDownloadError(this.message);
 }
+
+class MentalHealthAssessmentLoading extends HomeState {}
+
+class MentalHealthAssessmentSuccess extends HomeState {
+  final int assessmentType;
+  final int score;
+  MentalHealthAssessmentSuccess(this.assessmentType, this.score);
+}
+
+class MentalHealthAssessmentError extends HomeState {
+  final String message;
+  MentalHealthAssessmentError(this.message);
+}

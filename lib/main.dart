@@ -5,9 +5,9 @@ import 'package:flutter_project/screens/home/cubit/home_cubit.dart';
 import 'package:flutter_project/screens/auth/ui/forget.dart';
 import 'package:flutter_project/screens/auth/ui/login.dart';
 import 'package:flutter_project/screens/auth/ui/register.dart';
+import 'package:flutter_project/screens/home/ui/components/gad.dart';
 import 'package:flutter_project/screens/home/ui/home.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'cosntants.dart';
+import 'screens/home/ui/components/phq.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'helthy',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: false,
@@ -47,6 +47,8 @@ class MyApp extends StatelessWidget {
           '/register': (context) => RegisterPage(),
           '/forget': (context) => ForgetPassword(),
           '/home': (context) => HomePage(),
+          '/phd': (context) => const PhqScreen(),
+          '/gad': (context) => const GadScreen(),
         },
       ),
     );

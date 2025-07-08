@@ -5,6 +5,9 @@ import 'package:flutter_project/cosntants.dart';
 import 'package:flutter_project/screens/auth/cubit/auth_cubit.dart';
 import 'package:flutter_project/screens/auth/ui/login.dart';
 import 'package:flutter_project/screens/help.dart';
+import 'package:flutter_project/screens/home/ui/components/gad.dart';
+import 'package:flutter_project/screens/home/ui/components/phq.dart';
+
 import 'package:flutter_project/screens/privacy.dart';
 import 'package:flutter_project/screens/setting/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +23,30 @@ class Homedrawer extends StatelessWidget {
         children: [
           _buildDrawerHeader(),
           _buildDrawerItem(Icons.person, 'My Profile', context),
+          _buildDrawerItem(
+            Icons.analytics,
+            'Phd',
+            context,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PhqScreen()),
+              );
+            },
+          ),
+          _buildDrawerItem(
+            Icons.analytics,
+            'Gad',
+            context,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const GadScreen()),
+              );
+            },
+          ),
           _buildDrawerItemWithImage(
             'images/uil_setting.png',
             'Setting',
@@ -238,16 +265,15 @@ class Homedrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title, BuildContext context) {
+  Widget _buildDrawerItem(IconData icon, String title, BuildContext context,
+      {VoidCallback? onTap}) {
     return ListTile(
-      leading: Icon(icon, color: Colors.teal),
+      leading: Icon(icon, color: Colors.black),
       title: Text(title,
           style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF048581))),
-      trailing: const Icon(Icons.arrow_forward_ios, color: Colors.teal),
-      onTap: () => Navigator.pop(context),
+              fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black)),
+      trailing: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+      onTap: onTap ?? () => Navigator.pop(context),
     );
   }
 
