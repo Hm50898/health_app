@@ -334,4 +334,34 @@ class HomeCubit extends Cubit<HomeState> {
           'Failed to submit assessment. Please try again.'));
     }
   }
+
+  Future<void> getEDEngineCheck() async {
+    try {
+      emit(EDEngineCheckLoading());
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString(tokenKey);
+      if (token == null) {
+        emit(EDEngineCheckError('No token found'));
+        return;
+      }
+      final response = await http.get(
+        Uri.parse('$baseUrl/EDEngine/Check'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        emit(EDEngineCheckLoaded(data));
+      } else {
+        final errorData = json.decode(response.body);
+        emit(EDEngineCheckError(
+            errorData['message'] ?? 'Failed to load check data'));
+      }
+    } catch (e) {
+      debugPrint('Error in getEDEngineCheck: $e');
+      emit(EDEngineCheckError('Failed to load check data. Please try again.'));
+    }
+  }
 }

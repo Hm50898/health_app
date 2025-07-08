@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/cosntants.dart';
+import 'package:flutter_project/screens/home/ui/report.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_project/screens/home/cubit/home_states.dart';
 import 'package:flutter_project/screens/home/ui/components/actionButton.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_project/screens/home/ui/components/homeDrawer.dart';
 import 'package:flutter_project/screens/home/ui/components/serviceItem.dart';
 import 'package:flutter_project/screens/privacy.dart';
 import 'package:flutter_project/screens/profile.dart';
-import 'package:flutter_project/screens/recommendation.dart';
+import 'package:flutter_project/screens/home/ui/recommendation.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/services.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/medicine.dart';
 import 'package:flutter_project/screens/home/ui/healthRecord/ibm.dart';
@@ -315,6 +316,13 @@ class HomePage extends StatelessWidget {
               unselectedFontSize: smallFontSize,
               onTap: (index) {
                 cubit.changeIndex(index);
+                if (index == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HypertensionReportPage()),
+                  );
+                }
                 if (index == 2) {
                   Navigator.push(
                     context,

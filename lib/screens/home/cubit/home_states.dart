@@ -110,3 +110,15 @@ class MentalHealthAssessmentError extends HomeState {
   final String message;
   MentalHealthAssessmentError(this.message);
 }
+
+class EDEngineCheckLoading extends HomeState {}
+
+class EDEngineCheckLoaded extends HomeState {
+  final Map<String, dynamic> data;
+  EDEngineCheckLoaded(this.data);
+}
+
+class EDEngineCheckError extends HomeState {
+  final String message;
+  EDEngineCheckError(this.message);
+}
