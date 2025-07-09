@@ -40,41 +40,86 @@ class GeneralHealth extends StatelessWidget {
             value,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Icon(
-                status.contains("Higher")
-                    ? Icons.arrow_upward_rounded
-                    : Icons.arrow_downward_rounded,
-                color: indicatorColor,
-                size: 20,
-              ),
-              const SizedBox(width: 1),
-              Text(
-                status,
-                style: TextStyle(color: textColor, fontSize: 12),
-              ),
-            ],
-          ),
+          status == "" ? const SizedBox() : const SizedBox(height: 10),
+          status == ""
+              ? const SizedBox()
+              : Row(
+                  children: [
+                    // Icon(
+                    //   status.contains("Higher")
+                    //       ? Icons.arrow_upward_rounded
+                    //       : Icons.arrow_downward_rounded,
+                    //   color: indicatorColor,
+                    //   size: 20,
+                    // ),
+                    // const SizedBox(width: 1),
+                    Text(
+                      status,
+                      style:
+                          const TextStyle(color: Colors.black87, fontSize: 14),
+                    ),
+                  ],
+                ),
         ],
       ),
     );
   }
 
-  Widget buildBloodPressure(String label, Color color) {
+  Widget buildBloodPressure(String label, Color color, List readings) {
+    // تحديد أقصى قيمة لعمل مقياس نسبي للارتفاع
+    double maxValue = 1;
+    if (readings.isNotEmpty) {
+      maxValue = readings
+          .map((e) => (e['hemoglobinValue'] as num).toDouble())
+          .reduce((a, b) => a > b ? a : b);
+    }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(7, (index) {
-          return Container(
-            width: 8,
-            height: 70,
-            decoration: BoxDecoration(
-              color: index % 2 == 0 ? color : Colors.lightBlueAccent,
-              borderRadius: BorderRadius.circular(6),
-            ),
+        children: List.generate(readings.length, (index) {
+          final reading = readings[index];
+          final value = (reading['hemoglobinValue'] as num).toDouble();
+          final date = reading['date'] as String;
+          // استخراج الشهر واليوم فقط
+          String shortDate = '';
+          try {
+            final parts = date.split('-');
+            if (parts.length == 3) {
+              shortDate = '${parts[1]}-${parts[2]}';
+            } else {
+              shortDate = date;
+            }
+          } catch (_) {
+            shortDate = date;
+          }
+          // تحديد ارتفاع العمود بناءً على القيمة (مثلاً: 70 هو أقصى ارتفاع)
+          double minBarHeight = 20;
+          double maxBarHeight = 70;
+          double barHeight = minBarHeight +
+              ((value / maxValue) * (maxBarHeight - minBarHeight));
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                value.toString(),
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+              const SizedBox(height: 6),
+              Container(
+                width: 16,
+                height: barHeight,
+                decoration: BoxDecoration(
+                  color: index % 2 == 0 ? color : Colors.lightBlueAccent,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                shortDate,
+                style: const TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+            ],
           );
         }),
       ),
@@ -215,19 +260,16 @@ class GeneralHealth extends StatelessWidget {
                 // Extract values from the new data structure
                 final bloodPressure =
                     '${data['bloodPressure']['averageSystolic']}/${data['bloodPressure']['averageDiastolic']}';
-                final bloodPressureStatus = data['bloodPressure']['isNormal']
-                    ? 'Normal'
-                    : 'Higher than average';
+                final bloodPressureStatus =
+                    data['bloodPressure']['isNormal'] ? '' : 'Not Normal';
 
                 final glucoseLevel = '${data['glucose']['average']}';
-                final glucoseStatus = data['glucose']['isNormal']
-                    ? 'Normal'
-                    : 'Higher than average';
+                final glucoseStatus =
+                    data['glucose']['isNormal'] ? '' : 'Not Normal';
 
                 final heartRate = '${data['heartRate']['average']}';
-                final heartRateStatus = data['heartRate']['isNormal']
-                    ? 'Normal'
-                    : 'Lower than average';
+                final heartRateStatus =
+                    data['heartRate']['isNormal'] ? '' : 'Not Normal';
 
                 final lowestBloodPressure =
                     data['lowestBloodPressure'] ?? '170/80';
@@ -246,8 +288,10 @@ class GeneralHealth extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: buildCard(
@@ -265,7 +309,7 @@ class GeneralHealth extends StatelessWidget {
                                   : Colors.red,
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: buildCard(
                               title: 'Glucose Level',
@@ -297,8 +341,9 @@ class GeneralHealth extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: buildCard(
@@ -329,7 +374,7 @@ class GeneralHealth extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: Column(
                               children: [
@@ -355,7 +400,7 @@ class GeneralHealth extends StatelessWidget {
                           )
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 18),
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -365,7 +410,11 @@ class GeneralHealth extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            buildBloodPressure("Blood Pressure", Colors.orange),
+                            buildBloodPressure(
+                                "Blood Pressure",
+                                Colors.orange,
+                                data['hemoglobin']['hemoglobinReadings']
+                                    as List),
                             const SizedBox(height: 10),
                             const Text(
                               'Hemoglobin',
