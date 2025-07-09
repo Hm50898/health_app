@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
               elevation: 0,
               actions: [
                 Padding(
-                  padding: EdgeInsets.only(right: horizontalPadding),
+                  padding: const EdgeInsets.only(right: horizontalPadding),
                   child: Row(
                     children: [
                       _buildTransformedImage('images/Primary.png', iconSize),
@@ -74,21 +74,21 @@ class HomePage extends StatelessWidget {
               ],
             ),
             drawer: const Homedrawer(),
-            floatingActionButton: FloatingActionButton(
-              mini: true,
-              backgroundColor: const Color(0xFF036666),
-              onPressed: () {
-                cubit.toggleButtonsVisibility();
-              },
-              child: Icon(cubit.isButtonsVisible ? Icons.close : Icons.add),
-            ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            // floatingActionButton: FloatingActionButton(
+            //   mini: true,
+            //   backgroundColor: const Color(0xFF036666),
+            //   onPressed: () {
+            //     cubit.toggleButtonsVisibility();
+            //   },
+            //   child: Icon(cubit.isButtonsVisible ? Icons.close : Icons.add),
+            // ),
+            // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             body: Stack(
               children: [
                 SingleChildScrollView(
                   child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: horizontalPadding),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -157,7 +157,7 @@ class HomePage extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Services()),
+                                      builder: (context) => const Services()),
                                 );
                               },
                               child: Text(
@@ -243,7 +243,7 @@ class HomePage extends StatelessWidget {
                         SizedBox(height: verticalPadding),
                         _buildSecondPromoCard(context, cubit, cardHeight,
                             imageSize, fontSize, smallFontSize, buttonSize),
-                        SizedBox(height: screenHeight * 0.12),
+                        SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -489,7 +489,7 @@ class HomePage extends StatelessWidget {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -509,8 +509,35 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Image.asset('images/Online Doctor-rafiki 1.png',
-                  width: imageSize, height: imageSize * 1.05),
+              Stack(
+                children: [
+                  Image.asset(
+                    'images/Online Doctor-rafiki 1.png',
+                    width: imageSize,
+                    height: imageSize * 1.05,
+                  ),
+                  Positioned(
+                    bottom: 25,
+                    right: 8,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        cubit.toggleButtonsVisibility();
+                      },
+
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(8),
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF036666),
+                        elevation: 4,
+                      ),
+                      child: Icon(cubit.isButtonsVisible
+                          ? Icons.close
+                          : Icons.add), // يمكنك تغيير الأيقونة أو النص
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ],

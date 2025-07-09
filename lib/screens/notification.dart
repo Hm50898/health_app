@@ -49,6 +49,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -86,148 +87,143 @@ class _NotificationPageState extends State<NotificationPage> {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 30),
-
                 isCleared
                     ? Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'images/empty.png',
-                          height: 300,
-                        ),
-                        Text(
-                          'There is no notifications yet.',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                            color: Colors.black,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'images/empty.png',
+                                height: 300,
+                              ),
+                              Text(
+                                'There is no notifications yet.',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                )
+                      )
                     : Expanded(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Today',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                isCleared = true;
-                              });
-                            },
-                            child: Text(
-                              'Clear all',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      Expanded(
-                        child: ListView(
+                        child: Column(
                           children: [
-                            ...List.generate(3, (index) {
-                              final notification = notifications[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: NotificationCard(
-                                  icon: notification['icon']!,
-                                  title: notification['title']!,
-                                  subtitle: notification['subtitle']!,
-                                  isSelected: selectedIndex == index,
-                                  onTap: () {
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Today',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
                                     setState(() {
-                                      selectedIndex = index;
+                                      isCleared = true;
                                     });
                                   },
+                                  child: Text(
+                                    'Clear all',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                 ),
-                              );
-                            }),
-
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                'Yesterday',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              ],
                             ),
-
-                            ...List.generate(2, (i) {
-                              int index = i + 3;
-                              final notification = notifications[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: NotificationCard(
-                                  icon: notification['icon']!,
-                                  title: notification['title']!,
-                                  subtitle: notification['subtitle']!,
-                                  isSelected: selectedIndex == index,
-                                  onTap: () {
-                                    setState(() {
-                                      selectedIndex = index;
-                                    });
-                                  },
-                                ),
-                              );
-                            }),
-
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(vertical: 10),
-                              child: Text(
-                                '20 Jan 2025',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: NotificationCard(
-                                icon: notifications[5]['icon']!,
-                                title: notifications[5]['title']!,
-                                subtitle: notifications[5]['subtitle']!,
-                                isSelected: selectedIndex == 5,
-                                onTap: () {
-                                  setState(() {
-                                    selectedIndex = 5;
-                                  });
-                                },
+                            Expanded(
+                              child: ListView(
+                                children: [
+                                  ...List.generate(3, (index) {
+                                    final notification = notifications[index];
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: NotificationCard(
+                                        icon: notification['icon']!,
+                                        title: notification['title']!,
+                                        subtitle: notification['subtitle']!,
+                                        isSelected: selectedIndex == index,
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                      ),
+                                    );
+                                  }),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Text(
+                                      'Yesterday',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  ...List.generate(2, (i) {
+                                    int index = i + 3;
+                                    final notification = notifications[index];
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: NotificationCard(
+                                        icon: notification['icon']!,
+                                        title: notification['title']!,
+                                        subtitle: notification['subtitle']!,
+                                        isSelected: selectedIndex == index,
+                                        onTap: () {
+                                          setState(() {
+                                            selectedIndex = index;
+                                          });
+                                        },
+                                      ),
+                                    );
+                                  }),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    child: Text(
+                                      '20 Jan 2025',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: NotificationCard(
+                                      icon: notifications[5]['icon']!,
+                                      title: notifications[5]['title']!,
+                                      subtitle: notifications[5]['subtitle']!,
+                                      isSelected: selectedIndex == 5,
+                                      onTap: () {
+                                        setState(() {
+                                          selectedIndex = 5;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ),

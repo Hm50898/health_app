@@ -47,18 +47,18 @@ class Homedrawer extends StatelessWidget {
               );
             },
           ),
-          _buildDrawerItemWithImage(
-            'images/uil_setting.png',
-            'Setting',
-            context,
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
-            },
-          ),
+          // _buildDrawerItemWithImage(
+          //   'images/uil_setting.png',
+          //   'Setting',
+          //   context,
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const SettingsPage()),
+          //     );
+          //   },
+          // ),
           _buildDrawerItemWithImage(
             'images/material-symbols-light_security (1).png',
             'Privacy & Policy',

@@ -54,6 +54,7 @@ class _mdetailState extends State<MDetailPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Medicine Screen',
       home: Scaffold(
         backgroundColor: Colors.white,
