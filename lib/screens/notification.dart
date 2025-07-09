@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -7,7 +6,7 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  final Color borderColor = Color(0xFF036666);
+  final Color borderColor = const Color(0xFF036666);
   int? selectedIndex;
   bool isCleared = false;
 
